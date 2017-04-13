@@ -435,13 +435,13 @@ app.post('/webhook/', (req, res) => {
     const event = data.entry[0].messaging[0];
     const senderID = event.sender.id.toString();
 
-    if (req.body.result.action == 'onboard737Service.onboard737Service-yes') {
+    if (data.result.action == 'onboard737Service.onboard737Service-yes') {
         sendTypingOn(senderID);
         sendOnBoardMessage(senderID);
-    } else if (req.body.result.action == 'openaccount.openaccount-yes') {
+    } else if (data.result.action == 'openaccount.openaccount-yes') {
         sendTypingOn(senderID);
         sendOpenAccountMessage(senderID);
-    } else if (req.body.result.action == 'openaccount.openaccount-no') {
+    } else if (data.result.action == 'openaccount.openaccount-no') {
         sendTypingOn(senderID);
         sendOpenAccountMessage(senderID);
     } else {
