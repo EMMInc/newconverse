@@ -283,6 +283,12 @@ class FacebookBot {
                     } else if (action === 'openaccount.openaccount-no') {
                         sendTypingOn(senderID);
                         sendOpenAccountMessage(senderID);
+                    } else if (action === 'input.welcome') {
+                        sendTypingOn(senderID);
+                        sendOpenAccountMessage(senderID);
+                    } else if (action === 'open.account') {
+                        sendTypingOn(senderID);
+                        sendOpenAccountMessage(senderID);
                     } else {
                         if (this.isDefined(responseData) && this.isDefined(responseData.facebook)) {
                             let facebookResponseData = responseData.facebook;
