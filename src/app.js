@@ -275,20 +275,20 @@ class FacebookBot {
                     let responseAction = response.result.action;
                     let action = response.result.action;
                     if (action == 'onboard737Service.onboard737Service-yes') {
-                        sendTypingOn(senderID);
-                        sendOnBoardMessage(senderID);
+                        sendTypingOn(sender);
+                        sendOnBoardMessage(sender);
                     } else if (action === 'openaccount.openaccount-yes') {
-                        sendTypingOn(senderID);
-                        sendOpenAccountMessage(senderID);
+                        sendTypingOn(sender);
+                        sendOpenAccountMessage(sender);
                     } else if (action === 'openaccount.openaccount-no') {
-                        sendTypingOn(senderID);
-                        sendOpenAccountMessage(senderID);
+                        sendTypingOn(sender);
+                        sendOpenAccountMessage(sender);
                     } else if (action === 'input.welcome') {
-                        sendTypingOn(senderID);
-                        sendOpenAccountMessage(senderID);
+                        sendTypingOn(sender);
+                        sendOpenAccountMessage(sender);
                     } else if (action === 'open.account') {
-                        sendTypingOn(senderID);
-                        sendOpenAccountMessage(senderID);
+                        sendTypingOn(sender);
+                        sendOpenAccountMessage(sender);
                     } else {
                         if (this.isDefined(responseData) && this.isDefined(responseData.facebook)) {
                             let facebookResponseData = responseData.facebook;
