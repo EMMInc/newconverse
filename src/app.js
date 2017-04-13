@@ -272,18 +272,27 @@ class FacebookBot {
                     let responseText = response.result.fulfillment.speech;
                     let responseData = response.result.fulfillment.data;
                     let responseMessages = response.result.fulfillment.messages;
-
+                    let responseAction = response.result.action;
                     let action = response.result.action;
-
-                    if (this.isDefined(responseData) && this.isDefined(responseData.facebook)) {
-                        let facebookResponseData = responseData.facebook;
-                        this.doDataResponse(sender, facebookResponseData);
-                    } else if (this.isDefined(responseMessages) && responseMessages.length > 0) {
-                        this.doRichContentResponse(sender, responseMessages);
-                    } else if (this.isDefined(responseText)) {
-                        this.doTextResponse(sender, responseText);
+                    if (action == 'onboard737Service.onboard737Service-yes') {
+                        sendTypingOn(senderID);
+                        sendOnBoardMessage(senderID);
+                    } else if (action === 'openaccount.openaccount-yes') {
+                        sendTypingOn(senderID);
+                        sendOpenAccountMessage(senderID);
+                    } else if (action === 'openaccount.openaccount-no') {
+                        sendTypingOn(senderID);
+                        sendOpenAccountMessage(senderID);
+                    } else {
+                        if (this.isDefined(responseData) && this.isDefined(responseData.facebook)) {
+                            let facebookResponseData = responseData.facebook;
+                            this.doDataResponse(sender, facebookResponseData);
+                        } else if (this.isDefined(responseMessages) && responseMessages.length > 0) {
+                            this.doRichContentResponse(sender, responseMessages);
+                        } else if (this.isDefined(responseText)) {
+                            this.doTextResponse(sender, responseText);
+                        }
                     }
-
                 }
             });
 
@@ -431,20 +440,6 @@ app.get('/webhook/', (req, res) => {
 //post users data and get response
 app.post('/webhook/', (req, res) => {
     const data = JSONbig.parse(req.body);
-    // const messaging_events = data.entry[0].messaging;
-    // const event = data.entry[0].messaging[0];
-    // const senderID = event.sender.id;
-
-    // if (data.result.action === 'onboard737Service.onboard737Service-yes') {
-    //     sendTypingOn(senderID);
-    //     sendOnBoardMessage(senderID);
-    // } else if (data.result.action === 'openaccount.openaccount-yes') {
-    //     sendTypingOn(senderID);
-    //     sendOpenAccountMessage(senderID);
-    // } else if (data.result.action === 'openaccount.openaccount-no') {
-    //     sendTypingOn(senderID);
-    //     sendOpenAccountMessage(senderID);
-    // } else {
     try {
         if (data.entry) {
             let entries = data.entry;
@@ -452,7 +447,6 @@ app.post('/webhook/', (req, res) => {
                 let messaging_events = entry.messaging;
                 if (messaging_events) {
                     messaging_events.forEach((event) => {
-
                         if (event.message && !event.message.is_echo ||
                             event.postback && event.postback.payload) {
                             facebookBot.processEvent(event);
