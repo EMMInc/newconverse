@@ -430,54 +430,54 @@ app.get('/webhook/', (req, res) => {
 });
 //post users data and get response
 app.post('/webhook/', (req, res) => {
-    let responseText = req.body.result.fulfillment.speech;
-    let messaging_events = req.body.entry[0].messaging
-    let event = req.body.entry[0].messaging[0]
-    let senderID = event.sender.id
-    switch (req.body.result.action) {
-        case 'onboard737Service.onboard737Service-yes':
-            sendTypingOn(senderID);
-            sendOnBoardMessage(senderID);
-            break;
+    // let responseText = req.body.result.fulfillment.speech;
+    // let messaging_events = req.body.entry[0].messaging
+    // let event = req.body.entry[0].messaging[0]
+    // let senderID = event.sender.id
+    // switch (req.body.result.action) {
+    //     case 'onboard737Service.onboard737Service-yes':
+    //         sendTypingOn(senderID);
+    //         sendOnBoardMessage(senderID);
+    //         break;
 
-        case 'openaccount.openaccount-yes':
-            sendTypingOn(senderID);
-            sendOpenAccountMessage(senderID);
-            break;
+    //     case 'openaccount.openaccount-yes':
+    //         sendTypingOn(senderID);
+    //         sendOpenAccountMessage(senderID);
+    //         break;
 
-        case 'openaccount.openaccount-no':
-            sendTypingOn(senderID);
-            sendOpenAccountMessage(senderID);
-            break;
+    //     case 'openaccount.openaccount-no':
+    //         sendTypingOn(senderID);
+    //         sendOpenAccountMessage(senderID);
+    //         break;
 
-        default:
-            try {
-                const data = JSONbig.parse(req.body);
-                if (data.entry) {
-                    let entries = data.entry;
-                    entries.forEach((entry) => {
-                        let messaging_events = entry.messaging;
-                        if (messaging_events) {
-                            messaging_events.forEach((event) => {
-                                if (event.message && !event.message.is_echo ||
-                                    event.postback && event.postback.payload) {
-                                    facebookBot.processEvent(event);
-                                }
-                            });
+    //     default:
+    try {
+        const data = JSONbig.parse(req.body);
+        if (data.entry) {
+            let entries = data.entry;
+            entries.forEach((entry) => {
+                let messaging_events = entry.messaging;
+                if (messaging_events) {
+                    messaging_events.forEach((event) => {
+                        if (event.message && !event.message.is_echo ||
+                            event.postback && event.postback.payload) {
+                            facebookBot.processEvent(event);
                         }
                     });
                 }
+            });
+        }
 
-                return res.status(200).json({
-                    status: "ok"
-                });
-            } catch (err) {
-                return res.status(400).json({
-                    status: "error",
-                    error: err
-                });
-            }
+        return res.status(200).json({
+            status: "ok"
+        });
+    } catch (err) {
+        return res.status(400).json({
+            status: "error",
+            error: err
+        });
     }
+    // }
 });
 
 //facebook bot code
