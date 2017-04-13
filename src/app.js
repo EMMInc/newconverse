@@ -433,15 +433,15 @@ app.post('/webhook/', (req, res) => {
     const data = JSONbig.parse(req.body);
     const messaging_events = data.entry[0].messaging;
     const event = data.entry[0].messaging[0];
-    const senderID = event.sender.id.toString();
+    const senderID = event.sender.id;
 
-    if (data.result.action == 'onboard737Service.onboard737Service-yes') {
+    if (data.result.action === 'onboard737Service.onboard737Service-yes') {
         sendTypingOn(senderID);
         sendOnBoardMessage(senderID);
-    } else if (data.result.action == 'openaccount.openaccount-yes') {
+    } else if (data.result.action === 'openaccount.openaccount-yes') {
         sendTypingOn(senderID);
         sendOpenAccountMessage(senderID);
-    } else if (data.result.action == 'openaccount.openaccount-no') {
+    } else if (data.result.action === 'openaccount.openaccount-no') {
         sendTypingOn(senderID);
         sendOpenAccountMessage(senderID);
     } else {
@@ -452,6 +452,7 @@ app.post('/webhook/', (req, res) => {
                     let messaging_events = entry.messaging;
                     if (messaging_events) {
                         messaging_events.forEach((event) => {
+
                             if (event.message && !event.message.is_echo ||
                                 event.postback && event.postback.payload) {
                                 facebookBot.processEvent(event);
