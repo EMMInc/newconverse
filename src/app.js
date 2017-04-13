@@ -430,9 +430,10 @@ app.get('/webhook/', (req, res) => {
 });
 //post users data and get response
 app.post('/webhook/', (req, res) => {
-
-    let event = req.body.entry[0].messaging[0]
-    let senderID = event.sender.id
+    const data = JSONbig.parse(req.body);
+    const messaging_events = data.entry[0].messaging;
+    const event = data.entry[0].messaging[0];
+    const senderID = event.sender.id.toString();
 
     if (req.body.result.action == 'onboard737Service.onboard737Service-yes') {
         sendTypingOn(senderID);
@@ -445,7 +446,6 @@ app.post('/webhook/', (req, res) => {
         sendOpenAccountMessage(senderID);
     } else {
         try {
-            const data = JSONbig.parse(req.body);
             if (data.entry) {
                 let entries = data.entry;
                 entries.forEach((entry) => {
