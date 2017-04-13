@@ -11,7 +11,7 @@
         },
         "FB_VERIFY_TOKEN": {
             "description": "Verification code",
-            "value": "abcd1234"
+            "value": "abcd124"
         },
         "FB_PAGE_ACCESS_TOKEN": {
             "description": "Page Access Token",

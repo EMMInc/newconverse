@@ -428,37 +428,695 @@ app.get('/webhook/', (req, res) => {
         res.send('Error, wrong validation token');
     }
 });
-
+//post users data and get response
 app.post('/webhook/', (req, res) => {
-    try {
-        const data = JSONbig.parse(req.body);
+    let responseText = req.body.result.fulfillment.speech;
+    let messaging_events = req.body.entry[0].messaging
+    let event = req.body.entry[0].messaging[0]
+    let senderID = event.sender.id
+    switch (req.body.result.action) {
+        case 'onboard737Service.onboard737Service-yes':
+            sendTypingOn(senderID);
+            sendOnBoardMessage(senderID);
+            break;
 
-        if (data.entry) {
-            let entries = data.entry;
-            entries.forEach((entry) => {
-                let messaging_events = entry.messaging;
-                if (messaging_events) {
-                    messaging_events.forEach((event) => {
-                        if (event.message && !event.message.is_echo ||
-                            event.postback && event.postback.payload) {
-                            facebookBot.processEvent(event);
+        case 'openaccount.openaccount-yes':
+            sendTypingOn(senderID);
+            sendOpenAccountMessage(senderID);
+            break;
+
+        case 'openaccount.openaccount-no':
+            sendTypingOn(senderID);
+            sendOpenAccountMessage(senderID);
+            break;
+
+        default:
+            try {
+                const data = JSONbig.parse(req.body);
+                if (data.entry) {
+                    let entries = data.entry;
+                    entries.forEach((entry) => {
+                        let messaging_events = entry.messaging;
+                        if (messaging_events) {
+                            messaging_events.forEach((event) => {
+                                if (event.message && !event.message.is_echo ||
+                                    event.postback && event.postback.payload) {
+                                    facebookBot.processEvent(event);
+                                }
+                            });
                         }
                     });
                 }
-            });
-        }
 
-        return res.status(200).json({
-            status: "ok"
-        });
-    } catch (err) {
-        return res.status(400).json({
-            status: "error",
-            error: err
+                return res.status(200).json({
+                    status: "ok"
+                });
+            } catch (err) {
+                return res.status(400).json({
+                    status: "error",
+                    error: err
+                });
+            }
+    }
+});
+
+//facebook bot code
+/*
+ * Delivery Confirmation Event
+ *
+ * This event is sent to confirm the delivery of a message. Read more about 
+ * these fields at https://developers.facebook.com/docs/messenger-platform/webhook-reference/message-delivered
+ *
+ */
+function receivedDeliveryConfirmation(event) {
+    var senderID = event.sender.id;
+    var recipientID = event.recipient.id;
+    var delivery = event.delivery;
+    var messageIDs = delivery.mids;
+    var watermark = delivery.watermark;
+    var sequenceNumber = delivery.seq;
+
+    if (messageIDs) {
+        messageIDs.forEach(function(messageID) {
+            console.log("Received delivery confirmation for message ID: %s",
+                messageID);
         });
     }
 
-});
+    console.log("All message before %d were delivered.", watermark);
+}
+
+
+/*
+ * Postback Event
+ *
+ * This event is called when a postback is tapped on a Structured Message. 
+ * https://developers.facebook.com/docs/messenger-platform/webhook-reference/postback-received
+ * 
+ */
+function receivedPostback(event) {
+    var senderID = event.sender.id;
+    var recipientID = event.recipient.id;
+    var timeOfPostback = event.timestamp;
+
+    // The 'payload' param is a developer-defined field which is set in a postback 
+    // button for Structured Messages. 
+    var payload = event.postback.payload;
+
+    console.log("Received postback for user %d and page %d with payload '%s' " +
+        "at %d", senderID, recipientID, payload, timeOfPostback);
+
+    // When a postback is called, we'll send a message back to the sender to 
+    // let them know it was successful
+    sendTextMessage(senderID, "Postback called");
+}
+
+/*
+ * Message Read Event
+ *
+ * This event is called when a previously-sent message has been read.
+ * https://developers.facebook.com/docs/messenger-platform/webhook-reference/message-read
+ * 
+ */
+function receivedMessageRead(event) {
+    var senderID = event.sender.id;
+    var recipientID = event.recipient.id;
+
+    // All messages before watermark (a timestamp) or sequence have been seen.
+    var watermark = event.read.watermark;
+    var sequenceNumber = event.read.seq;
+
+    console.log("Received message read event for watermark %d and sequence " +
+        "number %d", watermark, sequenceNumber);
+}
+
+/*
+ * Account Link Event
+ *
+ * This event is called when the Link Account or UnLink Account action has been
+ * tapped.
+ * https://developers.facebook.com/docs/messenger-platform/webhook-reference/account-linking
+ * 
+ */
+function receivedAccountLink(event) {
+    var senderID = event.sender.id;
+    var recipientID = event.recipient.id;
+
+    var status = event.account_linking.status;
+    var authCode = event.account_linking.authorization_code;
+
+    console.log("Received account link event with for user %d with status %s " +
+        "and auth code %s ", senderID, status, authCode);
+}
+
+/*
+ * Send an image using the Send API.
+ *
+ */
+function sendImageMessage(recipientId) {
+    var messageData = {
+        recipient: {
+            id: recipientId
+        },
+        message: {
+            attachment: {
+                type: "image",
+                payload: {
+                    url: SERVER_URL + "/assets/rift.png"
+                }
+            }
+        }
+    };
+
+    callSendAPI(messageData);
+}
+
+/*
+ * Send a Gif using the Send API.
+ *
+ */
+function sendGifMessage(recipientId) {
+    var messageData = {
+        recipient: {
+            id: recipientId
+        },
+        message: {
+            attachment: {
+                type: "image",
+                payload: {
+                    url: SERVER_URL + "/assets/instagram_logo.gif"
+                }
+            }
+        }
+    };
+
+    callSendAPI(messageData);
+}
+
+/*
+ * Send audio using the Send API.
+ *
+ */
+function sendAudioMessage(recipientId) {
+    var messageData = {
+        recipient: {
+            id: recipientId
+        },
+        message: {
+            attachment: {
+                type: "audio",
+                payload: {
+                    url: SERVER_URL + "/assets/sample.mp3"
+                }
+            }
+        }
+    };
+
+    callSendAPI(messageData);
+}
+
+/*
+ * Send a video using the Send API.
+ *
+ */
+function sendVideoMessage(recipientId) {
+    var messageData = {
+        recipient: {
+            id: recipientId
+        },
+        message: {
+            attachment: {
+                type: "video",
+                payload: {
+                    url: SERVER_URL + "/assets/allofus480.mov"
+                }
+            }
+        }
+    };
+
+    callSendAPI(messageData);
+}
+
+/*
+ * Send a file using the Send API.
+ *
+ */
+function sendFileMessage(recipientId) {
+    var messageData = {
+        recipient: {
+            id: recipientId
+        },
+        message: {
+            attachment: {
+                type: "file",
+                payload: {
+                    url: SERVER_URL + "/assets/test.txt"
+                }
+            }
+        }
+    };
+
+    callSendAPI(messageData);
+}
+
+/*
+ * Send a text message using the Send API.
+ *
+ */
+function sendTextMessage(recipientId, messageText) {
+    var messageData = {
+        recipient: {
+            id: recipientId
+        },
+        message: {
+            text: messageText,
+            metadata: "DEVELOPER_DEFINED_METADATA"
+        }
+    };
+
+    callSendAPI(messageData);
+}
+
+/*
+ * Send a on baord message using the Send API.
+ *
+ */
+function sendOnBoardMessage(recipientId) {
+    var messageData = {
+        recipient: {
+            id: recipientId
+        },
+        message: {
+            attachment: {
+                type: "template",
+                payload: {
+                    template_type: "button",
+                    text: "Input your last 9 digits of card, expiry date and card pin?",
+                    buttons: [{
+                        type: "web_url",
+                        url: "http://www.highstrit.com/",
+                        title: "Click here to get onboarded",
+                        webview_height_ratio: "compact"
+                    }]
+                }
+            }
+        }
+    };
+
+    callSendAPI(messageData);
+}
+
+
+/*
+ * Send a open account message using the Send API.
+ *
+ */
+function sendOpenAccountMessage(recipientId) {
+    var messageData = {
+        recipient: {
+            id: recipientId
+        },
+        message: {
+            attachment: {
+                type: "template",
+                payload: {
+                    template_type: "button",
+                    text: "Enter BVN?",
+                    buttons: [{
+                        type: "web_url",
+                        url: "http://www.highstrit.com/",
+                        title: "Click here to enter BVN",
+                        webview_height_ratio: "compact"
+                    }]
+                }
+            }
+        }
+    };
+
+    callSendAPI(messageData);
+}
+
+/*
+ * Send a Structured Message (Generic Message type) using the Send API.
+ *
+ */
+function sendGenericMessage(recipientId) {
+    var messageData = {
+        recipient: {
+            id: recipientId
+        },
+        message: {
+            attachment: {
+                type: "template",
+                payload: {
+                    template_type: "generic",
+                    elements: [{
+                            title: "rift",
+                            subtitle: "Next-generation virtual reality",
+                            item_url: "http://www.highstrit.com/",
+                            image_url: SERVER_URL + "/assets/rift.png",
+                            buttons: [{
+                                type: "web_url",
+                                url: "http://www.highstrit.com/",
+                                title: "Open Web URL",
+                                webview_height_ratio: "compact"
+                            }, {
+                                type: "postback",
+                                title: "Call Postback",
+                                payload: "Payload for first bubble",
+                            }],
+                        },
+                        {
+                            title: "rift",
+                            subtitle: "Next-generation virtual reality",
+                            item_url: "http://www.highstrit.com/",
+                            image_url: SERVER_URL + "/assets/rift.png",
+                            buttons: [{
+                                type: "web_url",
+                                url: "http://www.highstrit.com/",
+                                title: "Open Web URL",
+                                webview_height_ratio: "compact"
+                            }, {
+                                type: "postback",
+                                title: "Call Postback",
+                                payload: "Payload for first bubble",
+                            }],
+                        },
+
+                        {
+                            title: "touch",
+                            subtitle: "Your Hands, Now in VR",
+                            item_url: "http://www.highstrit.com/",
+                            image_url: SERVER_URL + "/assets/touch.png",
+                            buttons: [{
+                                type: "web_url",
+                                url: "http://www.highstrit.com/",
+                                title: "Open Web URL",
+                                webview_height_ratio: "compact"
+                            }, {
+                                type: "postback",
+                                title: "Call Postback",
+                                payload: "Payload for second bubble",
+                            }]
+                        }
+                    ]
+                }
+            }
+        }
+    };
+
+    callSendAPI(messageData);
+}
+
+/*
+ * Send a receipt message using the Send API.
+ *
+ */
+function sendReceiptMessage(recipientId) {
+    // Generate a random receipt ID as the API requires a unique ID
+    var receiptId = "order" + Math.floor(Math.random() * 1000);
+
+    var messageData = {
+        recipient: {
+            id: recipientId
+        },
+        message: {
+            attachment: {
+                type: "template",
+                payload: {
+                    template_type: "receipt",
+                    recipient_name: "Peter Chang",
+                    order_number: receiptId,
+                    currency: "USD",
+                    payment_method: "Visa 1234",
+                    timestamp: "1428444852",
+                    elements: [{
+                        title: "Oculus Rift",
+                        subtitle: "Includes: headset, sensor, remote",
+                        quantity: 1,
+                        price: 599.00,
+                        currency: "USD",
+                        image_url: SERVER_URL + "/assets/riftsq.png"
+                    }, {
+                        title: "Samsung Gear VR",
+                        subtitle: "Frost White",
+                        quantity: 1,
+                        price: 99.99,
+                        currency: "USD",
+                        image_url: SERVER_URL + "/assets/gearvrsq.png"
+                    }],
+                    address: {
+                        street_1: "1 Hacker Way",
+                        street_2: "",
+                        city: "Menlo Park",
+                        postal_code: "94025",
+                        state: "CA",
+                        country: "US"
+                    },
+                    summary: {
+                        subtotal: 898.99,
+                        shipping_cost: 20.00,
+                        total_tax: 57.67,
+                        total_cost: 626.66
+                    },
+                    adjustments: [{
+                        name: "New Customer Discount",
+                        amount: -50
+                    }, {
+                        name: "$100 Off Coupon",
+                        amount: -100
+                    }]
+                }
+            }
+        }
+    };
+
+    callSendAPI(messageData);
+}
+
+/*
+ * Send a message with Quick Reply buttons.
+ *
+ */
+function sendQuickReply(recipientId) {
+    var messageData = {
+        recipient: {
+            id: recipientId
+        },
+        message: {
+            text: "Select any option",
+            quick_replies: [{
+                    "content_type": "text",
+                    "title": "Action",
+                    "payload": "DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_ACTION"
+                },
+                {
+                    "content_type": "text",
+                    "title": "Comedy",
+                    "payload": "DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_COMEDY"
+                },
+                {
+                    "content_type": "text",
+                    "title": "Drama",
+                    "payload": "DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_DRAMA"
+                }
+            ]
+        }
+    };
+
+    callSendAPI(messageData);
+}
+
+function sendLocation(recipientId) {
+    var messageData = {
+        recipient: {
+            id: recipientId
+        },
+        "message": {
+            "text": "Please share your location:",
+            "quick_replies": [{
+                "content_type": "location",
+            }]
+        }
+    };
+
+    callSendAPI(messageData);
+}
+
+/*
+ * Send a read receipt to indicate the message has been read
+ *
+ */
+function sendReadReceipt(recipientId) {
+    console.log("Sending a read receipt to mark message as seen");
+
+    var messageData = {
+        recipient: {
+            id: recipientId
+        },
+        sender_action: "mark_seen"
+    };
+
+    callSendAPI(messageData);
+}
+
+/*
+ * Turn typing indicator on
+ *
+ */
+function sendTypingOn(recipientId) {
+    console.log("Turning typing indicator on");
+
+    var messageData = {
+        recipient: {
+            id: recipientId
+        },
+        sender_action: "typing_on"
+    };
+
+    callSendAPI(messageData);
+}
+
+/*
+ * Turn typing indicator off
+ *
+ */
+function sendTypingOff(recipientId) {
+    console.log("Turning typing indicator off");
+
+    var messageData = {
+        recipient: {
+            id: recipientId
+        },
+        sender_action: "typing_off"
+    };
+
+    callSendAPI(messageData);
+}
+
+/*
+ * Send a message with the account linking call-to-action
+ *
+ */
+function sendAccountLinking(recipientId) {
+    var messageData = {
+        recipient: {
+            id: recipientId
+        },
+        message: {
+            attachment: {
+                type: "template",
+                payload: {
+                    template_type: "button",
+                    text: "Welcome. Link your account.",
+                    buttons: [{
+                        type: "account_link",
+                        url: SERVER_URL + "/authorize"
+                    }]
+                }
+            }
+        }
+    };
+
+    callSendAPI(messageData);
+}
+
+
+/**
+ * Get started
+ */
+function sendGetStarted(recipientId) {
+    var messageData = {
+        recipient: {
+            id: recipientId
+        },
+        get_started: {
+            payload: "GET_STARTED_PAYLOAD"
+        }
+    };
+
+    callSendAPI(messageData);
+}
+/**
+ * 
+ * @param {*call persistent menu} messageData 
+ */
+function sendPersistentMenu(recipientId) {
+    var messageData = {
+        recipient: {
+            id: recipientId
+        },
+        persistent_menu: [{
+                locale: "default",
+                composer_input_disabled: true,
+                call_to_actions: [{
+                        title: "My Account",
+                        type: "nested",
+                        call_to_actions: [{
+                                title: "Pay Bill",
+                                type: "postback",
+                                payload: "PAYBILL_PAYLOAD"
+                            },
+                            {
+                                title: "History",
+                                type: "postback",
+                                payload: "HISTORY_PAYLOAD"
+                            },
+                            {
+                                title: "Contact Info",
+                                type: "postback",
+                                payload: "CONTACT_INFO_PAYLOAD"
+                            }
+                        ]
+                    },
+                    {
+                        type: "web_url",
+                        title: "Latest News",
+                        url: "http://petershats.parseapp.com/hat-news",
+                        webview_height_ratio: "compact"
+                    }
+                ]
+            },
+            {
+                locale: "zh_CN",
+                composer_input_disabled: false
+            }
+        ]
+    };
+
+    callSendAPI(messageData);
+}
+
+
+/*
+ * Call the Send API. The message data goes in the body. If successful, we'll 
+ * get the message id in a response 
+ *
+ */
+function callSendAPI(messageData) {
+    request({
+        uri: 'https://graph.facebook.com/v2.6/me/messages',
+        qs: { access_token: FB_PAGE_ACCESS_TOKEN },
+        method: 'POST',
+        json: messageData
+
+    }, function(error, response, body) {
+        if (!error && response.statusCode == 200) {
+            var recipientId = body.recipient_id;
+            var messageId = body.message_id;
+
+            if (messageId) {
+                console.log("Successfully sent message with id %s to recipient %s",
+                    messageId, recipientId);
+            } else {
+                console.log("Successfully called Send API for recipient %s",
+                    recipientId);
+            }
+        } else {
+            console.error("Failed calling Send API", response.statusCode, response.statusMessage, body.error);
+        }
+    });
+}
 
 app.listen(REST_PORT, () => {
     console.log('Rest service ready on port ' + REST_PORT);
