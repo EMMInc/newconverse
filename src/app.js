@@ -431,47 +431,47 @@ app.get('/webhook/', (req, res) => {
 //post users data and get response
 app.post('/webhook/', (req, res) => {
     const data = JSONbig.parse(req.body);
-    const messaging_events = data.entry[0].messaging;
-    const event = data.entry[0].messaging[0];
-    const senderID = event.sender.id;
+    // const messaging_events = data.entry[0].messaging;
+    // const event = data.entry[0].messaging[0];
+    // const senderID = event.sender.id;
 
-    if (data.result.action === 'onboard737Service.onboard737Service-yes') {
-        sendTypingOn(senderID);
-        sendOnBoardMessage(senderID);
-    } else if (data.result.action === 'openaccount.openaccount-yes') {
-        sendTypingOn(senderID);
-        sendOpenAccountMessage(senderID);
-    } else if (data.result.action === 'openaccount.openaccount-no') {
-        sendTypingOn(senderID);
-        sendOpenAccountMessage(senderID);
-    } else {
-        try {
-            if (data.entry) {
-                let entries = data.entry;
-                entries.forEach((entry) => {
-                    let messaging_events = entry.messaging;
-                    if (messaging_events) {
-                        messaging_events.forEach((event) => {
+    // if (data.result.action === 'onboard737Service.onboard737Service-yes') {
+    //     sendTypingOn(senderID);
+    //     sendOnBoardMessage(senderID);
+    // } else if (data.result.action === 'openaccount.openaccount-yes') {
+    //     sendTypingOn(senderID);
+    //     sendOpenAccountMessage(senderID);
+    // } else if (data.result.action === 'openaccount.openaccount-no') {
+    //     sendTypingOn(senderID);
+    //     sendOpenAccountMessage(senderID);
+    // } else {
+    try {
+        if (data.entry) {
+            let entries = data.entry;
+            entries.forEach((entry) => {
+                let messaging_events = entry.messaging;
+                if (messaging_events) {
+                    messaging_events.forEach((event) => {
 
-                            if (event.message && !event.message.is_echo ||
-                                event.postback && event.postback.payload) {
-                                facebookBot.processEvent(event);
-                            }
-                        });
-                    }
-                });
-            }
-
-            return res.status(200).json({
-                status: "ok"
-            });
-        } catch (err) {
-            return res.status(400).json({
-                status: "error",
-                error: err
+                        if (event.message && !event.message.is_echo ||
+                            event.postback && event.postback.payload) {
+                            facebookBot.processEvent(event);
+                        }
+                    });
+                }
             });
         }
+
+        return res.status(200).json({
+            status: "ok"
+        });
+    } catch (err) {
+        return res.status(400).json({
+            status: "error",
+            error: err
+        });
     }
+    // }
 });
 
 //facebook bot code
