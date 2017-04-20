@@ -14,7 +14,7 @@ const APIAI_LANG = process.env.APIAI_LANG || 'en';
 const FB_VERIFY_TOKEN = process.env.FB_VERIFY_TOKEN;
 const FB_PAGE_ACCESS_TOKEN = process.env.FB_PAGE_ACCESS_TOKEN;
 const FB_TEXT_LIMIT = 640;
-var sender_id = "";
+
 
 class FacebookBot {
     constructor() {
@@ -250,9 +250,9 @@ class FacebookBot {
     processEvent(event) {
         const sender = event.sender.id.toString();
         //this can be used globally
-        sender_id = sender;
+        //  sender_id = sender;
         const text = this.getEventText(event);
-        const messageAttachments = message.attachments;
+        //  const messageAttachments = message.attachments;
 
         if (text) {
 
@@ -290,7 +290,6 @@ class FacebookBot {
 
                     } else if (action == 'location.search') {
                         sendLocation(sender);
-
                     } else {
                         if (this.isDefined(responseData) && this.isDefined(responseData.facebook)) {
                             let facebookResponseData = responseData.facebook;
@@ -306,13 +305,14 @@ class FacebookBot {
 
             apiaiRequest.on('error', (error) => console.error(error));
             apiaiRequest.end();
-        } else if (messageAttachments) {
-            var locationLat = messageAttachments[0].payload.coordinates.lat;
-            var locationLong = messageAttachments[0].payload.coordinates.long;
-            var locations = getAllLocation(locationLat, locationLong);
-            sendTextMessage(locations);
-            // sendTextMessage(senderID, locationLat + ", " + locationLong);
         }
+        // } else if (messageAttachments) {
+        //     var locationLat = messageAttachments[0].payload.coordinates.lat;
+        //     var locationLong = messageAttachments[0].payload.coordinates.long;
+        //     var locations = getAllLocation(locationLat, locationLong);
+        //     sendTextMessage(locations);
+        //     // sendTextMessage(senderID, locationLat + ", " + locationLong);
+        // }
     }
     splitResponse(str) {
         if (str.length <= FB_TEXT_LIMIT) {
