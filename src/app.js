@@ -287,11 +287,13 @@ class FacebookBot {
                     } else if (action === 'openaccount.openaccount-no') {
                         sendTypingOn(sender);
                         sendOpenAccountMessage(sender);
+
                     } else if (action === 'open.account' || action === 'input.unknown' || action === 'input.welcome') {
                         //sendTypingOn(sender);
                         sendLocation(sender);
                     } else if (action == 'atm') {
                         sendLocation(sender);
+
                     } else {
                         if (this.isDefined(responseData) && this.isDefined(responseData.facebook)) {
                             let facebookResponseData = responseData.facebook;
@@ -746,6 +748,254 @@ app.post('/onboard', urlencodedParser, function(request, response) {
 });
 
 
+//facebook bot code
+/*
+ * Delivery Confirmation Event
+ *
+ * This event is sent to confirm the delivery of a message. Read more about 
+ * these fields at https://developers.facebook.com/docs/messenger-platform/webhook-reference/message-delivered
+ *
+ */
+function receivedDeliveryConfirmation(event) {
+    var senderID = event.sender.id;
+    var recipientID = event.recipient.id;
+    var delivery = event.delivery;
+    var messageIDs = delivery.mids;
+    var watermark = delivery.watermark;
+    var sequenceNumber = delivery.seq;
+
+    if (messageIDs) {
+        messageIDs.forEach(function(messageID) {
+            console.log("Received delivery confirmation for message ID: %s",
+                messageID);
+        });
+    }
+
+    console.log("All message before %d were delivered.", watermark);
+}
+
+
+/*
+ * Postback Event
+ *
+ * This event is called when a postback is tapped on a Structured Message. 
+ * https://developers.facebook.com/docs/messenger-platform/webhook-reference/postback-received
+ * 
+ */
+function receivedPostback(event) {
+    var senderID = event.sender.id;
+    var recipientID = event.recipient.id;
+    var timeOfPostback = event.timestamp;
+
+    // The 'payload' param is a developer-defined field which is set in a postback 
+    // button for Structured Messages. 
+    var payload = event.postback.payload;
+
+    console.log("Received postback for user %d and page %d with payload '%s' " +
+        "at %d", senderID, recipientID, payload, timeOfPostback);
+
+    // When a postback is called, we'll send a message back to the sender to 
+    // let them know it was successful
+    sendTextMessage(senderID, "Postback called");
+}
+
+/*
+ * Message Read Event
+ *
+ * This event is called when a previously-sent message has been read.
+ * https://developers.facebook.com/docs/messenger-platform/webhook-reference/message-read
+ * 
+ */
+function receivedMessageRead(event) {
+    var senderID = event.sender.id;
+    var recipientID = event.recipient.id;
+
+    // All messages before watermark (a timestamp) or sequence have been seen.
+    var watermark = event.read.watermark;
+    var sequenceNumber = event.read.seq;
+
+    console.log("Received message read event for watermark %d and sequence " +
+        "number %d", watermark, sequenceNumber);
+}
+
+/*
+ * Account Link Event
+ *
+ * This event is called when the Link Account or UnLink Account action has been
+ * tapped.
+ * https://developers.facebook.com/docs/messenger-platform/webhook-reference/account-linking
+ * 
+ */
+function receivedAccountLink(event) {
+    var senderID = event.sender.id;
+    var recipientID = event.recipient.id;
+
+    var status = event.account_linking.status;
+    var authCode = event.account_linking.authorization_code;
+
+    console.log("Received account link event with for user %d with status %s " +
+        "and auth code %s ", senderID, status, authCode);
+}
+
+/*
+ * Send an image using the Send API.
+ *
+ */
+function sendImageMessage(recipientId) {
+    var messageData = {
+        recipient: {
+            id: recipientId
+        },
+        message: {
+            attachment: {
+                type: "image",
+                payload: {
+                    url: SERVER_URL + "/assets/rift.png"
+                }
+            }
+        }
+    };
+
+    callSendAPI(messageData);
+}
+
+/*
+ * Send a Gif using the Send API.
+ *
+ */
+function sendGifMessage(recipientId) {
+    var messageData = {
+        recipient: {
+            id: recipientId
+        },
+        message: {
+            attachment: {
+                type: "image",
+                payload: {
+                    url: SERVER_URL + "/assets/instagram_logo.gif"
+                }
+            }
+        }
+    };
+
+    callSendAPI(messageData);
+}
+
+/*
+ * Send audio using the Send API.
+ *
+ */
+function sendAudioMessage(recipientId) {
+    var messageData = {
+        recipient: {
+            id: recipientId
+        },
+        message: {
+            attachment: {
+                type: "audio",
+                payload: {
+                    url: SERVER_URL + "/assets/sample.mp3"
+                }
+            }
+        }
+    };
+
+    callSendAPI(messageData);
+}
+
+/*
+ * Send a video using the Send API.
+ *
+ */
+function sendVideoMessage(recipientId) {
+    var messageData = {
+        recipient: {
+            id: recipientId
+        },
+        message: {
+            attachment: {
+                type: "video",
+                payload: {
+                    url: SERVER_URL + "/assets/allofus480.mov"
+                }
+            }
+        }
+    };
+
+    callSendAPI(messageData);
+}
+
+/*
+ * Send a file using the Send API.
+ *
+ */
+function sendFileMessage(recipientId) {
+    var messageData = {
+        recipient: {
+            id: recipientId
+        },
+        message: {
+            attachment: {
+                type: "file",
+                payload: {
+                    url: SERVER_URL + "/assets/test.txt"
+                }
+            }
+        }
+    };
+
+    callSendAPI(messageData);
+}
+
+/*
+ * Send a text message using the Send API.
+ *
+ */
+function sendTextMessage(recipientId, messageText) {
+    var messageData = {
+        recipient: {
+            id: recipientId
+        },
+        message: {
+            text: messageText,
+            metadata: "DEVELOPER_DEFINED_METADATA"
+        }
+    };
+
+    callSendAPI(messageData);
+}
+
+/*
+ * Send a on baord message using the Send API.
+ *
+ */
+function sendOnBoardMessage(recipientId) {
+    var messageData = {
+        recipient: {
+            id: recipientId
+        },
+        message: {
+            attachment: {
+                type: "template",
+                payload: {
+                    template_type: "button",
+                    text: "Input your last 9 digits of card, expiry date and card pin?",
+                    buttons: [{
+                        type: "web_url",
+                        url: "http://www.highstrit.com/",
+                        title: "Click here to get onboarded",
+                        webview_height_ratio: "compact"
+                    }]
+                }
+            }
+        }
+    };
+
+    callSendAPI(messageData);
+}
+
+
+
 /*
  * Send a open account message using the Send API.
  *
@@ -763,7 +1013,11 @@ function sendOpenAccountMessage(recipientId) {
                     text: "Enter BVN?",
                     buttons: [{
                         type: "web_url",
+
                         url: __dirname + "/views/onboard.html",
+
+                        url: "http://www.highstrit.com/",
+
                         title: "Click here to enter BVN",
                         webview_height_ratio: "compact"
                     }]
@@ -1106,6 +1360,7 @@ function sendPersistentMenu(recipientId) {
     callSendAPI(messageData);
 }
 
+
 function getAllLocation(latitude, longitude) {
     var options = {
         method: 'GET',
@@ -1130,6 +1385,7 @@ function getAllLocation(latitude, longitude) {
     });
 
 }
+
 /*
  * Call the Send API. The message data goes in the body. If successful, we'll 
  * get the message id in a response 
