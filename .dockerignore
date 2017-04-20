@@ -1,4 +1,11 @@
+<<<<<<< HEAD
 .idea/
 node_modules/
 coverage/
 npm-debug.log
+=======
+.idea/
+node_modules/
+coverage/
+npm-debug.log
+>>>>>>> 289287e37ddf0e54444a5dd14e4d686a6a4f1ee0
