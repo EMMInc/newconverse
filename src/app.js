@@ -442,7 +442,6 @@ app.use(bodyParser.text({ type: 'application/json' }));
 app.get('/webhook/', (req, res) => {
     if (req.query['hub.verify_token'] == FB_VERIFY_TOKEN) {
         res.send(req.query['hub.challenge']);
-
         setTimeout(() => {
             facebookBot.doSubscribeRequest();
         }, 3000);
@@ -727,24 +726,21 @@ function sendOnBoardMessage(recipientId) {
     callSendAPI(messageData);
 }
 
-//get post data from onboard webview
-var express = require('express');
-var app = express();
-var bodyParser = require('body-parser');
-var urlencodedParser = bodyParser.urlencoded({ extended: false });
-app.use(express.static('public'));
-app.post('/onboard', urlencodedParser, function(request, response) {
-    res = {
-        card_digits: request.body.card_digits,
-        expiry_date: request.body.expiry_date,
-        card_pin: request.body.card_pin,
-    };
-    //this.doTextResponse(sender_id, JSON.stringify(res));
-    sendTextMessage(sender_id, JSON.stringify(res))
-    console.log(res);
-    response.end(JSON.stringify(res));
-});
-
+// //get post data from onboard webview
+// const app = express();
+// var urlencodedParser = bodyParser.urlencoded({ extended: false });
+// app.use(express.static('public'));
+// app.post('/onboard', urlencodedParser, function(request, response) {
+//     res = {
+//         card_digits: request.body.card_digits,
+//         expiry_date: request.body.expiry_date,
+//         card_pin: request.body.card_pin,
+//     };
+//     //this.doTextResponse(sender_id, JSON.stringify(res));
+//     sendTextMessage(sender_id, JSON.stringify(res))
+//     console.log(res);
+//     response.end(JSON.stringify(res));
+// });
 
 //facebook bot code
 /*
