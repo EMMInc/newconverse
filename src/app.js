@@ -333,8 +333,7 @@ class FacebookBot {
             const locationLat = messageAttachments[0].payload.coordinates.lat;
             const locationLong = messageAttachments[0].payload.coordinates.long;
             const locationResult = getAllLocation(locationLat, locationLong)
-                //this.doTextResponse(sender, JSON.stringify(locationResult));
-            sendTextMessage(sender, locationResult);
+            sendTextMessage(sender, JSON.stringify(locationResult));
         }
     }
 
