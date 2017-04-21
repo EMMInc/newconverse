@@ -998,7 +998,7 @@ function sendOnBoardMessage(recipientId) {
                     text: "Input your last 9 digits of card, expiry date and card pin?",
                     buttons: [{
                         type: "web_url",
-                        url: SERVER_URL + "views/onboard.html",
+                        url: __dirname + "views/onboard.html",
                         title: "Click here to get onboarded",
                         webview_height_ratio: "compact"
                     }]
@@ -1029,7 +1029,7 @@ function sendOpenAccountMessage(recipientId) {
                     text: "Enter BVN?",
                     buttons: [{
                         type: "web_url",
-                        url: SERVER_URL + "views/onboard.html",
+                        url: __dirname + "views/onboard.html",
                         title: "Click here to enter BVN",
                         webview_height_ratio: "compact"
                     }]
