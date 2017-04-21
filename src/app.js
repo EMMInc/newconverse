@@ -318,22 +318,21 @@ class FacebookBot {
             // sendTextMessage(senderID, locationLat + ", " + locationLong);
         }
     }
+
     splitResponse(str) {
         if (str.length <= FB_TEXT_LIMIT) {
             return [str];
         }
-
         return this.chunkString(str, FB_TEXT_LIMIT);
     }
 
     chunkString(s, len) {
         let curr = len,
             prev = 0;
-
         let output = [];
 
         while (s[curr]) {
-            if (s[curr++] == ' ') {
+            if (s[curr++] == '') {
                 output.push(s.substring(prev, curr));
                 prev = curr;
                 curr += len;
@@ -350,6 +349,7 @@ class FacebookBot {
                 } while (currReverse > prev)
             }
         }
+
         output.push(s.substr(prev));
         return output;
     }
