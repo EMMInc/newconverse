@@ -1245,6 +1245,14 @@ function sendReadReceipt(recipientId) {
     callSendAPI(messageData);
 }
 
+
+//get onboard html file
+
+var express = require('express');
+var app = express();
+app.get('/views/onboard.html', function(request, response) {
+    response.sendFile(__dirname + "views/" + "onboard.html");
+});
 /*
  * Turn typing indicator on
  *
