@@ -215,19 +215,39 @@ class FacebookBot {
 
     }
 
-    doTextResponse(sender, responseText) {
-            console.log('Response as text message');
-            // facebook API limit for text length is 640,
-            // so we must split message if needed
-            let splittedText = this.splitResponse(responseText);
+    //facebook text response message
+    /*
+     * Send a text message using the Send API.
+     *
+     */
+    sendTextMessage(recipientId, messageText) {
+        var messageData = {
+            recipient: {
+                id: recipientId
+            },
+            message: {
+                text: messageText,
+                metadata: "DEVELOPER_DEFINED_METADATA"
+            }
+        };
 
-            async.eachSeries(splittedText, (textPart, callback) => {
-                this.sendFBMessage(sender, { text: textPart })
-                    .then(() => callback())
-                    .catch(err => callback(err));
-            });
-        }
-        //which webhook event
+        callSendAPI(messageData);
+    }
+    doTextResponse(sender, responseText) {
+        console.log('Response as text message');
+        // facebook API limit for text length is 640,
+        // so we must split message if needed
+        let splittedText = this.splitResponse(responseText);
+
+        async.eachSeries(splittedText, (textPart, callback) => {
+            this.sendFBMessage(sender, { text: textPart })
+                .then(() => callback())
+                .catch(err => callback(err));
+        });
+    }
+
+
+    //which webhook event
     getEventText(event) {
         if (event.message) {
             if (event.message.quick_reply && event.message.quick_reply.payload) {
