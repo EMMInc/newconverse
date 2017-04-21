@@ -312,7 +312,8 @@ class FacebookBot {
         } else if (messageAttachments) {
             const locationLat = messageAttachments[0].payload.coordinates.lat;
             const locationLong = messageAttachments[0].payload.coordinates.long;
-            this.doTextResponse(getAllLocation(locationLat, locationLong));
+            let locationResult = getAllLocation(locationLat, locationLong)
+            this.doTextResponse(JSON.stringify(locationResult));
             // sendTextMessage(senderID, locationLat + ", " + locationLong);
         }
     }
