@@ -310,7 +310,6 @@ class FacebookBot {
                     } else if (action === 'openaccount.openaccount-no') {
                         sendTypingOn(sender);
                         sendOpenAccountMessage(sender);
-
                     } else if (action == 'location.search') {
                         sendLocation(sender);
                     } else {
@@ -503,11 +502,32 @@ app.post('/webhook/', (req, res) => {
 });
 
 //get onboard html file
-
-app.get('/views/onboard.html', function(request, response) {
-    response.sendFile(__dirname + "/views/" + "onboard.html");
+app.get('/views/onboardserviceyes.html', function(request, response) {
+    response.sendFile(__dirname + "/views/" + "onboardserviceyes.html");
 });
 
+//get open account html file
+app.get('/views/open_account_yes.html', function(request, response) {
+    response.sendFile(__dirname + "/views/" + "open_account_yes.html");
+});
+//get users data from onboard page
+app.get('/onboard', function(request, response) {
+    res = {
+        card: request.query.card,
+        expiry_date: request.query.expiry_date,
+        pin: request.query.pin,
+    };
+    console.log(res);
+    response.end(JSON.stringify(res));
+});
+//get users data from open account page
+app.get('/open_account', function(request, response) {
+    res = {
+        bvn: request.query.bvn,
+    };
+    console.log(res);
+    response.end(JSON.stringify(res));
+});
 //facebook bot code
 /*
  * Delivery Confirmation Event
@@ -725,34 +745,6 @@ function sendTextMessage(recipientId, messageText) {
     callSendAPI(messageData);
 }
 
-/*
- * Send a on baord message using the Send API.
- *
- */
-function sendOnBoardMessage(recipientId) {
-    var messageData = {
-        recipient: {
-            id: recipientId
-        },
-        message: {
-            attachment: {
-                type: "template",
-                payload: {
-                    template_type: "button",
-                    text: "Input your last 9 digits of card, expiry date and card pin?",
-                    buttons: [{
-                        type: "web_url",
-                        url: "http://www.highstrit.com/",
-                        title: "Click here to get onboarded",
-                        webview_height_ratio: "compact"
-                    }]
-                }
-            }
-        }
-    };
-
-    callSendAPI(messageData);
-}
 
 // //get post data from onboard webview
 // const app = express();
@@ -1004,7 +996,7 @@ function sendOnBoardMessage(recipientId) {
                     text: "Input your last 9 digits of card, expiry date and card pin?",
                     buttons: [{
                         type: "web_url",
-                        url: "https://my737.herokuapp.com/views/onboard.html",
+                        url: "https://my737.herokuapp.com/views/onboardserviceyes.html",
                         title: "Click here to get onboarded",
                         webview_height_ratio: "compact"
                     }]
@@ -1035,8 +1027,8 @@ function sendOpenAccountMessage(recipientId) {
                     text: "Enter BVN?",
                     buttons: [{
                         type: "web_url",
-                        url: "https://my737.herokuapp.com/views/onboard.html",
-                        title: "Click here to enter BVN",
+                        url: "https://my737.herokuapp.com/views/open_account_yes.html",
+                        title: "Click Here To Enter BVN",
                         webview_height_ratio: "compact"
                     }]
                 }
