@@ -502,6 +502,12 @@ app.post('/webhook/', (req, res) => {
     // }
 });
 
+//get onboard html file
+
+app.get('/views/onboard.html', function(request, response) {
+    response.sendFile(__dirname + "/views/" + "onboard.html");
+});
+
 //facebook bot code
 /*
  * Delivery Confirmation Event
@@ -1246,13 +1252,7 @@ function sendReadReceipt(recipientId) {
 }
 
 
-//get onboard html file
 
-var express = require('express');
-var app = express();
-app.get('/views/onboard.html', function(request, response) {
-    response.sendFile(__dirname + "views/" + "onboard.html");
-});
 /*
  * Turn typing indicator on
  *
