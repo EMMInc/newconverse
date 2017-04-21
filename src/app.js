@@ -253,11 +253,11 @@ class FacebookBot {
         //  sender_id = sender;
         const text = this.getEventText(event);
         //  const messageAttachments = message.attachments;
-        const message = event.message;
-        // const isEcho = message.is_echo;
+        // const message = event.message;
+        // // const isEcho = message.is_echo;
 
-        // You may get a text or attachment but not both
-        const messageAttachments = message.attachments;
+        // // You may get a text or attachment but not both
+        // const messageAttachments = message.attachments;
 
         if (text) {
 
@@ -311,12 +311,13 @@ class FacebookBot {
             apiaiRequest.on('error', (error) => console.error(error));
             apiaiRequest.end();
 
-        } else if (messageAttachments) {
-            var locationLat = messageAttachments[0].payload.coordinates.lat;
-            var locationLong = messageAttachments[0].payload.coordinates.long;
-            this.doTextResponse(getAllLocation(locationLat, locationLong));
-            // sendTextMessage(senderID, locationLat + ", " + locationLong);
         }
+        // else if (messageAttachments) {
+        //     var locationLat = messageAttachments[0].payload.coordinates.lat;
+        //     var locationLong = messageAttachments[0].payload.coordinates.long;
+        //     this.doTextResponse(getAllLocation(locationLat, locationLong));
+        //     // sendTextMessage(senderID, locationLat + ", " + locationLong);
+        // }
     }
 
     splitResponse(str) {
