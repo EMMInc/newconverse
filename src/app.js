@@ -7,6 +7,7 @@ const uuid = require('node-uuid');
 const request = require('request');
 const JSONbig = require('json-bigint');
 const async = require('async');
+const urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 const REST_PORT = (process.env.PORT || 5000);
 const APIAI_ACCESS_TOKEN = process.env.APIAI_ACCESS_TOKEN;
@@ -459,7 +460,7 @@ let facebookBot = new FacebookBot();
 const app = express();
 
 app.use(bodyParser.text({ type: 'application/json' }));
-
+app.use(express.static('public'));
 app.get('/webhook/', (req, res) => {
     if (req.query['hub.verify_token'] == FB_VERIFY_TOKEN) {
         res.send(req.query['hub.challenge']);
@@ -518,7 +519,7 @@ app.get('/onboard', function(request, response) {
         pin: request.query.pin,
     };
     console.log(res);
-    response.end(JSON.stringify(res));
+    // response.end(JSON.stringify(res));
 });
 //get users data from open account page
 app.get('/open_account', function(request, response) {
@@ -526,7 +527,7 @@ app.get('/open_account', function(request, response) {
         bvn: request.query.bvn,
     };
     console.log(res);
-    response.end(JSON.stringify(res));
+    //response.end(JSON.stringify(res));
 });
 //facebook bot code
 /*
