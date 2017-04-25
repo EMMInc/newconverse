@@ -213,7 +213,6 @@ class FacebookBot {
                     }
                 });
         });
-
     }
 
     //facebook text response message
@@ -460,7 +459,7 @@ let facebookBot = new FacebookBot();
 const app = express();
 
 app.use(bodyParser.text({ type: 'application/json' }));
-app.use(express.static('public'));
+//app.use(express.static('public'));
 app.get('/webhook/', (req, res) => {
     if (req.query['hub.verify_token'] == FB_VERIFY_TOKEN) {
         res.send(req.query['hub.challenge']);
@@ -513,7 +512,7 @@ app.get('/views/open_account_yes.html', function(request, response) {
 });
 //get users data from onboard page
 app.get('/onboard', function(request, response) {
-    res = {
+    let res = {
         card: request.query.card,
         expiry_date: request.query.expiry_date,
         pin: request.query.pin,
@@ -523,7 +522,7 @@ app.get('/onboard', function(request, response) {
 });
 //get users data from open account page
 app.get('/open_account', function(request, response) {
-    res = {
+    let res = {
         bvn: request.query.bvn,
     };
     console.log(res);
@@ -997,7 +996,7 @@ function sendOnBoardMessage(recipientId) {
                     text: "Input your last 9 digits of card, expiry date and card pin?",
                     buttons: [{
                         type: "web_url",
-                        url: "https://my737.herokuapp.com/views/onboardserviceyes.html",
+                        url: "http://www.ishopeasily.com/bot/onboardserviceyes.html",
                         title: "Click here to get onboarded",
                         webview_height_ratio: "compact"
                     }]
@@ -1028,7 +1027,7 @@ function sendOpenAccountMessage(recipientId) {
                     text: "Enter BVN?",
                     buttons: [{
                         type: "web_url",
-                        url: "https://my737.herokuapp.com/views/open_account_yes.html",
+                        url: "http://www.ishopeasily.com/bot/open_account_yes.html",
                         title: "Click Here To Enter BVN",
                         webview_height_ratio: "compact"
                     }]
