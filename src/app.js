@@ -1396,6 +1396,7 @@ function getNearestBankLocation(recipientId, latitude, longitude) {
         console.log(body);
         const places = JSON.parse(body);
         let results = places.results;
+        let i = 0;
         if (isDefined(results)) {
             results.forEach(function(result) {
                 let base_url = 'https://www.google.com.ng/maps/place/';
@@ -1420,7 +1421,10 @@ function getNearestBankLocation(recipientId, latitude, longitude) {
                         payload: "Payload for first bubble",
                     }],
                 }
-                options.push(obj);
+                i++;
+                if (i < 5) {
+                    options.push(obj);
+                }
             });
         }
 
