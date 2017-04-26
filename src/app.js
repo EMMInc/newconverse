@@ -1408,8 +1408,6 @@ function getNearestBankLocation(recipientId, latitude, longitude) {
                 let item_url = base_url + place_name + '/@' + geometry;
                 let icon = result.icon;
                 let vicinity = result.vicinity;
-
-
                 let obj = {
                     title: name,
                     subtitle: vicinity,
