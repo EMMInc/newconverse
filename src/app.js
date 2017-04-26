@@ -1393,53 +1393,52 @@ function getNearestBankLocation(latitude, longitude) {
         if (error) throw new Error(error);
         //display result as generic
         let options = [];
-        console.log(response.toString());
-        return response.toString();
-        // if (isDefined(response)) {
-        //     let results = response['results'];
-        //     results.forEach(function(result) {
-        //         let base_url = 'https://www.google.com.ng/maps/place/';
-        //         let name = result.name;
-        //         let place_name = result.name.split(' ').join('+');
-        //         let geometry = result.geometry.location.lat + ',' + result.geometry.location.lng;
-        //         let item_url = base_url + place_name + '/@' + geometry;
-        //         let icon = result.icon;
-        //         let obj = {
-        //             title: name,
-        //             subtitle: name,
-        //             item_url: item_url,
-        //             image_url: icon,
-        //             buttons: [{
-        //                 type: "web_url",
-        //                 url: item_url,
-        //                 title: "View place in map",
-        //                 webview_height_ratio: "compact"
-        //             }, {
-        //                 type: "postback",
-        //                 title: "Call Postback",
-        //                 payload: "Payload for first bubble",
-        //             }],
-        //         }
-        //         options.push(obj);
-        //     });
-        // }
+        console.log(body);
+        if (isDefined(body)) {
+            let results = body.results;
+            results.forEach(function(result) {
+                let base_url = 'https://www.google.com.ng/maps/place/';
+                let name = result.name;
+                let place_name = result.name.split(' ').join('+');
+                let geometry = result.geometry.location.lat + ',' + result.geometry.location.lng;
+                let item_url = base_url + place_name + '/@' + geometry;
+                let icon = result.icon;
+                let obj = {
+                    title: name,
+                    subtitle: name,
+                    item_url: item_url,
+                    image_url: icon,
+                    buttons: [{
+                        type: "web_url",
+                        url: item_url,
+                        title: "View place in map",
+                        webview_height_ratio: "compact"
+                    }, {
+                        type: "postback",
+                        title: "Call Postback",
+                        payload: "Payload for first bubble",
+                    }],
+                }
+                options.push(obj);
+            });
+        }
 
-        // var messageData = {
-        //     recipient: {
-        //         id: recipientId
-        //     },
-        //     message: {
-        //         attachment: {
-        //             type: "template",
-        //             payload: {
-        //                 template_type: "generic",
-        //                 elements: options,
-        //             }
-        //         }
-        //     }
-        // };
+        var messageData = {
+            recipient: {
+                id: recipientId
+            },
+            message: {
+                attachment: {
+                    type: "template",
+                    payload: {
+                        template_type: "generic",
+                        elements: options,
+                    }
+                }
+            }
+        };
 
-        // callSendAPI(messageData);
+        callSendAPI(messageData);
     });
 
 }
