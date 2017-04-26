@@ -1388,7 +1388,7 @@ function getNearestBankLocation(recipientId, latitude, longitude) {
             'cache-control': 'no-cache'
         }
     };
-
+    //get response from google place api
     request(options, function(error, response, body) {
         if (error) throw new Error(error);
         //display result as generic
@@ -1397,6 +1397,7 @@ function getNearestBankLocation(recipientId, latitude, longitude) {
         const places = JSON.parse(body);
         let results = places.results;
         let i = 0;
+        const defaultName = 'GTB'
         if (isDefined(results)) {
             results.forEach(function(result) {
                 let base_url = 'https://www.google.com.ng/maps/place/';
@@ -1418,8 +1419,11 @@ function getNearestBankLocation(recipientId, latitude, longitude) {
                     }],
                 }
                 i++;
-                if (i < 10) {
-                    options.push(obj);
+                //check if returned name consist of default keyword
+                if (name.indexOf(defaultName) > -1) {
+                    if (i < 10) {
+                        options.push(obj);
+                    }
                 }
             });
         }
@@ -1448,15 +1452,12 @@ function isDefined(obj) {
     if (typeof obj == 'undefined') {
         return false;
     }
-
     if (!obj) {
         return false;
     }
 
     return obj != null;
 }
-
-
 
 
 /*
