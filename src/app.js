@@ -1215,7 +1215,7 @@ function sendLocation(recipientId) {
             id: recipientId
         },
         "message": {
-            "text": "Please share your location:",
+            "text": "Please share your current location:",
             "quick_replies": [{
                 "content_type": "location",
             }]
