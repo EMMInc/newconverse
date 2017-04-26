@@ -1393,7 +1393,7 @@ function getNearestBankLocation(latitude, longitude) {
         if (error) throw new Error(error);
         //display result as generic
         let options = [];
-
+        console.log(response.toString());
         if (isDefined(response)) {
             let results = response.results;
             results.forEach(function(result) {
