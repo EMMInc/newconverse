@@ -1395,14 +1395,14 @@ function getNearestBankLocation(latitude, longitude) {
         let options = [];
         console.log(body);
         if (isDefined(body)) {
-            let results = body.results;
+            let results = body["results"];
             results.forEach(function(result) {
                 let base_url = 'https://www.google.com.ng/maps/place/';
-                let name = result.name;
-                let place_name = result.name.split(' ').join('+');
-                let geometry = result.geometry.location.lat + ',' + result.geometry.location.lng;
+                let name = result['name'];
+                let place_name = result['name'].split(' ').join('+');
+                let geometry = result['geometry']['location']['lat'] + ',' + result['geometry']['location']['lng'];
                 let item_url = base_url + place_name + '/@' + geometry;
-                let icon = result.icon;
+                let icon = result['icon'];
                 let obj = {
                     title: name,
                     subtitle: name,
