@@ -1413,16 +1413,12 @@ function getNearestBankLocation(recipientId, latitude, longitude) {
                     buttons: [{
                         type: "web_url",
                         url: item_url,
-                        title: "View place in map",
+                        title: "View place in google map",
                         webview_height_ratio: "compact"
-                    }, {
-                        type: "postback",
-                        title: "Call Postback",
-                        payload: "Payload for first bubble",
                     }],
                 }
                 i++;
-                if (i < 5) {
+                if (i < 10) {
                     options.push(obj);
                 }
             });
