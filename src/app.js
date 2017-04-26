@@ -291,7 +291,7 @@ class FacebookBot {
                 originalRequest: {
                     data: event,
                     source: "facebook"
-                }
+                },
             });
             //get response from api.ai
             apiaiRequest.on('response', (response) => {
@@ -998,7 +998,7 @@ function sendOnBoardMessage(recipientId) {
                         type: "web_url",
                         url: "http://www.ishopeasily.com/bot/onboardserviceyes.html",
                         title: "Click here to get onboarded",
-                        webview_height_ratio: "compact"
+                        webview_height_ratio: "tall"
                     }]
                 }
             }
@@ -1029,7 +1029,7 @@ function sendOpenAccountMessage(recipientId) {
                         type: "web_url",
                         url: "http://www.ishopeasily.com/bot/open_account_yes.html",
                         title: "Click Here To Enter BVN",
-                        webview_height_ratio: "compact"
+                        webview_height_ratio: "tall"
                     }]
                 }
             }
