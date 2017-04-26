@@ -1407,8 +1407,13 @@ function getNearestBankLocation(recipientId, latitude, longitude) {
                 let geometry = result.geometry.location.lat + ',' + result.geometry.location.lng;
                 let item_url = base_url + place_name + '/@' + geometry;
                 let icon = result.icon;
-                let photoReference = result.photos[0].photo_reference;
-                let locationImageUrl = photoBaseUrl + 'photoreference=' + photoReference + '&key=AIzaSyDfxCKlNXlyTUdDS_1gWYQAS2zH7pE1qgk&maxwidth=400';
+                let photos = result.photos;
+                let locationImageUrl = '';
+
+                photos.forEach(function(photo) {
+                    locationImageUrl = photoBaseUrl + 'photoreference=' + photo.photo_reference + '&key=AIzaSyDfxCKlNXlyTUdDS_1gWYQAS2zH7pE1qgk&maxwidth=' + photo.width;
+                });
+
                 let obj = {
                     title: name,
                     subtitle: name,
