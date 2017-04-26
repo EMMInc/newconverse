@@ -331,6 +331,7 @@ class FacebookBot {
         } else if (messageAttachments) {
             const locationLat = messageAttachments[0].payload.coordinates.lat;
             const locationLong = messageAttachments[0].payload.coordinates.long;
+            sendTypingOn(sender);
             getNearestBankLocation(sender, locationLat, locationLong);
         }
     }
