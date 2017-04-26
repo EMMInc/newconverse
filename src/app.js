@@ -1394,7 +1394,7 @@ function getNearestBankLocation(latitude, longitude) {
         //display result as generic
         let options = [];
 
-        if (this.isDefined(response)) {
+        if (isDefined(response)) {
             let results = response.results;
             if (results.length > 0) {
                 results.forEach(function(result) {
@@ -1444,6 +1444,19 @@ function getNearestBankLocation(latitude, longitude) {
     });
 
 }
+//check if result or array is defined
+function isDefined(obj) {
+    if (typeof obj == 'undefined') {
+        return false;
+    }
+
+    if (!obj) {
+        return false;
+    }
+
+    return obj != null;
+}
+
 
 
 
