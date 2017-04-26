@@ -1398,7 +1398,7 @@ function getNearestBankLocation(recipientId, latitude, longitude) {
         let results = places.results;
         let i = 0;
         const defaultName = 'GTB'
-        const photoBaseUrl = 'https://maps.googleapis.com/maps/api/place/photo?';
+            //  const photoBaseUrl = 'https://maps.googleapis.com/maps/api/place/photo?';
         if (isDefined(results)) {
             results.forEach(function(result) {
                 let base_url = 'https://www.google.com.ng/maps/place/';
@@ -1407,17 +1407,12 @@ function getNearestBankLocation(recipientId, latitude, longitude) {
                 let geometry = result.geometry.location.lat + ',' + result.geometry.location.lng;
                 let item_url = base_url + place_name + '/@' + geometry;
                 let icon = result.icon;
-                let photos = JSON.parse(result.photos);
-                let locationImageUrl = '';
-                photos.forEach(function(photo) {
-                    locationImageUrl = photoBaseUrl + 'photoreference=' + photo.photo_reference + '&key=AIzaSyDfxCKlNXlyTUdDS_1gWYQAS2zH7pE1qgk&maxwidth=' + photo.width;
-                });
 
                 let obj = {
                     title: name,
                     subtitle: name,
                     item_url: item_url,
-                    image_url: locationImageUrl,
+                    image_url: icon,
                     buttons: [{
                         type: "web_url",
                         url: item_url,
