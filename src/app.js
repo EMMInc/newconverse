@@ -331,7 +331,7 @@ class FacebookBot {
         } else if (messageAttachments) {
             const locationLat = messageAttachments[0].payload.coordinates.lat;
             const locationLong = messageAttachments[0].payload.coordinates.long;
-            getNearestBankLocation(locationLat, locationLong);
+            getNearestBankLocation(sender, locationLat, locationLong);
         }
     }
 
@@ -1372,7 +1372,7 @@ function sendPersistentMenu(recipientId) {
 }
 
 //get nearest bank and atm locations and return result as a generic message
-function getNearestBankLocation(latitude, longitude) {
+function getNearestBankLocation(recipientId, latitude, longitude) {
     var options = {
         method: 'GET',
         url: 'https://maps.googleapis.com/maps/api/place/nearbysearch/json',
@@ -1399,11 +1399,11 @@ function getNearestBankLocation(latitude, longitude) {
         if (isDefined(results)) {
             results.forEach(function(result) {
                 let base_url = 'https://www.google.com.ng/maps/place/';
-                let name = result['name'];
-                let place_name = result['name'].split(' ').join('+');
-                let geometry = result['geometry']['location']['lat'] + ',' + result['geometry']['location']['lng'];
+                let name = result.name;
+                let place_name = result.name.split(' ').join('+');
+                let geometry = result.geometry.location.lat + ',' + result.geometry.location.lng;
                 let item_url = base_url + place_name + '/@' + geometry;
-                let icon = result['icon'];
+                let icon = result.icon;
                 let obj = {
                     title: name,
                     subtitle: name,
