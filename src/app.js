@@ -1396,33 +1396,31 @@ function getNearestBankLocation(latitude, longitude) {
 
         if (isDefined(response)) {
             let results = response.results;
-            if (results.length > 0) {
-                results.forEach(function(result) {
-                    let base_url = 'https://www.google.com.ng/maps/place/';
-                    let name = result.name;
-                    let place_name = result.name.split(' ').join('+');
-                    let geometry = result.geometry.location.lat + ',' + result.geometry.location.lng;
-                    let item_url = base_url + place_name + '/@' + geometry;
-                    let icon = result.icon;
-                    let obj = {
-                        title: name,
-                        subtitle: name,
-                        item_url: item_url,
-                        image_url: icon,
-                        buttons: [{
-                            type: "web_url",
-                            url: item_url,
-                            title: "View place in map",
-                            webview_height_ratio: "compact"
-                        }, {
-                            type: "postback",
-                            title: "Call Postback",
-                            payload: "Payload for first bubble",
-                        }],
-                    }
-                    options.push(obj);
-                });
-            }
+            results.forEach(function(result) {
+                let base_url = 'https://www.google.com.ng/maps/place/';
+                let name = result.name;
+                let place_name = result.name.split(' ').join('+');
+                let geometry = result.geometry.location.lat + ',' + result.geometry.location.lng;
+                let item_url = base_url + place_name + '/@' + geometry;
+                let icon = result.icon;
+                let obj = {
+                    title: name,
+                    subtitle: name,
+                    item_url: item_url,
+                    image_url: icon,
+                    buttons: [{
+                        type: "web_url",
+                        url: item_url,
+                        title: "View place in map",
+                        webview_height_ratio: "compact"
+                    }, {
+                        type: "postback",
+                        title: "Call Postback",
+                        payload: "Payload for first bubble",
+                    }],
+                }
+                options.push(obj);
+            });
         }
 
         var messageData = {
