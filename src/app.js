@@ -1379,7 +1379,7 @@ function getNearestBankLocation(recipientId, latitude, longitude) {
         qs: {
             location: latitude + ',' + longitude,
             radius: '5000',
-            types: 'atm|bank',
+            types: 'atm',
             sensor: 'false',
             key: 'AIzaSyDfxCKlNXlyTUdDS_1gWYQAS2zH7pE1qgk'
         },
