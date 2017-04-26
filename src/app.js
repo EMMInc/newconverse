@@ -1394,8 +1394,9 @@ function getNearestBankLocation(latitude, longitude) {
         //display result as generic
         let options = [];
         console.log(body);
-        if (isDefined(body)) {
-            let results = body["results"];
+        const places = JSON.parse(body);
+        let results = places.results;
+        if (isDefined(results)) {
             results.forEach(function(result) {
                 let base_url = 'https://www.google.com.ng/maps/place/';
                 let name = result['name'];
