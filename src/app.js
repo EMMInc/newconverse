@@ -309,7 +309,7 @@ class FacebookBot {
                         sendOpenAccountMessage(sender);
                     } else if (action === 'openaccount.openaccount-no') {
                         sendTypingOn(sender);
-                        sendOpenAccountMessage(sender);
+                        sendOpenAccountNoMessage(sender);
                     } else if (action == 'location.search') {
                         sendLocation(sender);
                     } else {
@@ -1012,9 +1012,9 @@ function sendOnBoardMessage(recipientId) {
 
 /*
  * Send a open account message using the Send API.
- *
+ * open account with users profile
  */
-function sendOpenAccountMessage(recipientId) {
+function sendOpenAccountYesMessage(recipientId) {
     var messageData = {
         recipient: {
             id: recipientId
@@ -1029,6 +1029,36 @@ function sendOpenAccountMessage(recipientId) {
                         type: "web_url",
                         url: "http://www.ishopeasily.com/bot/open_account_yes.html",
                         title: "Click Here To Enter BVN",
+                        webview_height_ratio: "tall"
+                    }]
+                }
+            }
+        }
+    };
+
+    callSendAPI(messageData);
+}
+
+
+
+/*
+ * Open account with bvn number
+ */
+function sendOpenAccountNoMessage(recipientId) {
+    var messageData = {
+        recipient: {
+            id: recipientId
+        },
+        message: {
+            attachment: {
+                type: "template",
+                payload: {
+                    template_type: "button",
+                    text: "Enter BVN?",
+                    buttons: [{
+                        type: "web_url",
+                        url: "http://www.ishopeasily.com/bot/open_account_no.html",
+                        title: "Continue to open account",
                         webview_height_ratio: "tall"
                     }]
                 }
@@ -1107,7 +1137,6 @@ function sendGenericMessage(recipientId) {
             }
         }
     };
-
     callSendAPI(messageData);
 }
 
@@ -1418,7 +1447,7 @@ function getNearestBankLocation(recipientId, latitude, longitude) {
                         type: "web_url",
                         url: item_url,
                         title: "View place in google map",
-                        webview_height_ratio: "compact"
+                        webview_height_ratio: "tall"
                     }],
                 }
                 i++;
@@ -1461,6 +1490,7 @@ function isDefined(obj) {
 
     return obj != null;
 }
+
 
 
 /*
