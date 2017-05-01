@@ -1412,7 +1412,7 @@ function getNearestBankLocation(recipientId, searchKeyword, latitude, longitude)
         qs: {
             location: latitude + ',' + longitude,
             radius: '5000',
-            types: searchKeyword,
+            types: searchKeyword.toLowerCase(),
             sensor: 'false',
             key: 'AIzaSyDfxCKlNXlyTUdDS_1gWYQAS2zH7pE1qgk'
         },
@@ -1432,53 +1432,58 @@ function getNearestBankLocation(recipientId, searchKeyword, latitude, longitude)
         let i = 0;
         const defaultName = 'GTB'
             //  const photoBaseUrl = 'https://maps.googleapis.com/maps/api/place/photo?';
-        if (isDefined(results)) {
-            results.forEach(function(result) {
-                let base_url = 'https://www.google.com.ng/maps/place/';
-                let name = result.name;
-                let place_name = result.name.split(' ').join('+');
-                let geometry = result.geometry.location.lat + ',' + result.geometry.location.lng;
-                let item_url = base_url + place_name + '/@' + geometry;
-                let icon = result.icon;
-                let vicinity = result.vicinity;
-                let obj = {
-                    title: name,
-                    subtitle: vicinity,
-                    item_url: item_url,
-                    image_url: icon,
-                    buttons: [{
-                        type: "web_url",
-                        url: item_url,
-                        title: "View place in google map",
-                        webview_height_ratio: "tall"
-                    }],
-                }
-                i++;
-                //check if returned name consist of default keyword
-                if (name.indexOf(defaultName) > -1) {
-                    if (i < 10) {
-                        options.push(obj);
+        if (results.length > 0) {
+            if (isDefined(results)) {
+                results.forEach(function(result) {
+                    let base_url = 'https://www.google.com.ng/maps/place/';
+                    let name = result.name;
+                    let place_name = result.name.split(' ').join('+');
+                    let geometry = result.geometry.location.lat + ',' + result.geometry.location.lng;
+                    let item_url = base_url + place_name + '/@' + geometry;
+                    let icon = result.icon;
+                    let vicinity = result.vicinity;
+                    let obj = {
+                        title: name,
+                        subtitle: vicinity,
+                        item_url: item_url,
+                        image_url: icon,
+                        buttons: [{
+                            type: "web_url",
+                            url: item_url,
+                            title: "View place in google map",
+                            webview_height_ratio: "tall"
+                        }],
                     }
-                }
-            });
-        }
-
-        var messageData = {
-            recipient: {
-                id: recipientId
-            },
-            message: {
-                attachment: {
-                    type: "template",
-                    payload: {
-                        template_type: "generic",
-                        elements: options,
+                    i++;
+                    //check if returned name consist of default keyword
+                    if (name.indexOf(defaultName) > -1) {
+                        if (i < 10) {
+                            options.push(obj);
+                        }
                     }
-                }
+                });
             }
-        };
 
-        callSendAPI(messageData);
+
+            var messageData = {
+                recipient: {
+                    id: recipientId
+                },
+                message: {
+                    attachment: {
+                        type: "template",
+                        payload: {
+                            template_type: "generic",
+                            elements: options,
+                        }
+                    }
+                }
+            };
+
+            callSendAPI(messageData);
+        } else {
+            sendTextMessage(sender, "No search result found");
+        }
     });
 
 }
