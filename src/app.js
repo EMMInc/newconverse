@@ -16,6 +16,8 @@ const FB_VERIFY_TOKEN = process.env.FB_VERIFY_TOKEN;
 const FB_PAGE_ACCESS_TOKEN = process.env.FB_PAGE_ACCESS_TOKEN;
 const FB_TEXT_LIMIT = 640;
 
+let searchKeyword = '';
+
 
 class FacebookBot {
     constructor() {
@@ -301,6 +303,7 @@ class FacebookBot {
                     let responseMessages = response.result.fulfillment.messages;
                     let responseAction = response.result.action;
                     let action = response.result.action;
+                    searchKeyword = response.result.parameters.keyword;
                     if (action == 'onboard737Service.onboard737Service-yes') {
                         sendTypingOn(sender);
                         sendOnBoardMessage(sender);
@@ -332,7 +335,7 @@ class FacebookBot {
             const locationLat = messageAttachments[0].payload.coordinates.lat;
             const locationLong = messageAttachments[0].payload.coordinates.long;
             sendTypingOn(sender);
-            getNearestBankLocation(sender, locationLat, locationLong);
+            getNearestBankLocation(sender, searchKeyword, locationLat, locationLong);
         }
     }
 
@@ -1402,14 +1405,14 @@ function sendPersistentMenu(recipientId) {
 }
 
 //get nearest bank and atm locations and return result as a generic message
-function getNearestBankLocation(recipientId, latitude, longitude) {
+function getNearestBankLocation(recipientId, searchKeyword, latitude, longitude) {
     var options = {
         method: 'GET',
         url: 'https://maps.googleapis.com/maps/api/place/nearbysearch/json',
         qs: {
             location: latitude + ',' + longitude,
             radius: '5000',
-            types: 'atm',
+            types: searchKeyword,
             sensor: 'false',
             key: 'AIzaSyDfxCKlNXlyTUdDS_1gWYQAS2zH7pE1qgk'
         },
