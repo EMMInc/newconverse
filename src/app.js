@@ -1457,7 +1457,7 @@ function getNearestBankLocation(recipientId, searchKeyword, latitude, longitude)
                     i++;
                     //check if returned name consist of default keyword
                     if (name.indexOf(defaultName) > -1) {
-                        if (i < 10) {
+                        if (i < 5) {
                             options.push(obj);
                         }
                     }
