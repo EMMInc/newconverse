@@ -1434,14 +1434,6 @@ function getNearestBankLocation(recipientId, searchKeyword, latitude, longitude)
         const places = JSON.parse(body);
         let results = places.results;
         let i = 0;
-        const search1 = name.indexOf('GTB');
-        searchResults.push(search1);
-        const search2 = name.indexOf('Guaranty Trust Bank');
-        searchResults.push(search2);
-        const search3 = name.indexOf('GT Bank');
-        searchResults.push(search3);
-        //check how many times -1 occured
-        let n = searchResults.join('').split("-1").length - 1
 
         //  const photoBaseUrl = 'https://maps.googleapis.com/maps/api/place/photo?';
         if (results.length > 0) {
@@ -1454,6 +1446,14 @@ function getNearestBankLocation(recipientId, searchKeyword, latitude, longitude)
                     let item_url = base_url + place_name + '/@' + geometry;
                     let icon = result.icon;
                     let vicinity = result.vicinity;
+                    const search1 = name.indexOf('GTB');
+                    searchResults.push(search1);
+                    const search2 = name.indexOf('Guaranty Trust Bank');
+                    searchResults.push(search2);
+                    const search3 = name.indexOf('GT Bank');
+                    searchResults.push(search3);
+                    //check how many times -1 occured
+                    let n = searchResults.join('').split("-1").length - 1
                     i++;
                     //check if returned name consist of default keyword
                     if (n != 3) {
