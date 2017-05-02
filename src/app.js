@@ -1449,7 +1449,7 @@ function getNearestBankLocation(recipientId, searchKeyword, latitude, longitude)
                     let vicinity = result.vicinity;
                     i++;
                     //check if returned name consist of default keyword
-                    if (name.indexOf(defaultName1) > -1 || name.indexOf(defaultName2) > -1 || name.indexOf(defaultName3) > -1) {
+                    if ((name.indexOf(defaultName1) > -1) || (name.indexOf(defaultName2) > -1) || (name.indexOf(defaultName3) > -1)) {
                         if (i < 5) {
                             let obj = {
                                 title: name,
