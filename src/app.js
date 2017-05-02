@@ -1429,7 +1429,7 @@ function getNearestBankLocation(recipientId, searchKeyword, latitude, longitude)
         }
         //display result as generic
         let options = [];
-        let searchResults = [];
+
         console.log(body);
         const places = JSON.parse(body);
         let results = places.results;
@@ -1439,6 +1439,7 @@ function getNearestBankLocation(recipientId, searchKeyword, latitude, longitude)
         if (results.length > 0) {
             if (isDefined(results)) {
                 results.forEach(function(result) {
+                    let searchResults = [];
                     let base_url = 'https://www.google.com.ng/maps/place/';
                     let name = result.name;
                     let place_name = result.name.split(' ').join('+');
@@ -1454,6 +1455,7 @@ function getNearestBankLocation(recipientId, searchKeyword, latitude, longitude)
                     searchResults.push(search3);
                     //check how many times -1 occured
                     let n = searchResults.join('').split("-1").length - 1
+                    console.log(n);
                     i++;
                     //check if returned name consist of default keyword
                     if (n != 3) {
