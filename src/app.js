@@ -1434,7 +1434,7 @@ function getNearestBankLocation(recipientId, searchKeyword, latitude, longitude)
         let results = places.results;
         let i = 0;
         const defaultName1 = 'GTB';
-        const defaultName2 = 'Guarantee Trust Bank';
+        const defaultName2 = 'Guaranty Trust Bank';
         const defaultName3 = 'GT Bank';
         //  const photoBaseUrl = 'https://maps.googleapis.com/maps/api/place/photo?';
         if (results.length > 0) {
