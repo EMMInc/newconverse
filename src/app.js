@@ -309,7 +309,7 @@ class FacebookBot {
                         sendOnBoardMessage(sender);
                     } else if (action === 'openaccount.openaccount-yes') {
                         sendTypingOn(sender);
-                        sendOpenAccountMessage(sender);
+                        sendOpenAccountYesMessage(sender);
                     } else if (action === 'openaccount.openaccount-no') {
                         sendTypingOn(sender);
                         sendOpenAccountNoMessage(sender);
