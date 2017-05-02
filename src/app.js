@@ -1430,8 +1430,10 @@ function getNearestBankLocation(recipientId, searchKeyword, latitude, longitude)
         const places = JSON.parse(body);
         let results = places.results;
         let i = 0;
-        const defaultName = 'GTB'
-            //  const photoBaseUrl = 'https://maps.googleapis.com/maps/api/place/photo?';
+        const defaultName1 = 'GTB';
+        const defaultName2 = 'Guarantee Trust Bank';
+        const defaultName3 = 'GT Bank';
+        //  const photoBaseUrl = 'https://maps.googleapis.com/maps/api/place/photo?';
         if (results.length > 0) {
             if (isDefined(results)) {
                 results.forEach(function(result) {
@@ -1442,28 +1444,27 @@ function getNearestBankLocation(recipientId, searchKeyword, latitude, longitude)
                     let item_url = base_url + place_name + '/@' + geometry;
                     let icon = result.icon;
                     let vicinity = result.vicinity;
-                    let obj = {
-                        title: name,
-                        subtitle: vicinity,
-                        item_url: item_url,
-                        image_url: icon,
-                        buttons: [{
-                            type: "web_url",
-                            url: item_url,
-                            title: "View place in google map",
-                            webview_height_ratio: "tall"
-                        }],
-                    }
                     i++;
                     //check if returned name consist of default keyword
-                    if (name.indexOf(defaultName) > -1) {
+                    if (name.indexOf(defaultName1) > -1 || name.indexOf(defaultName2) > -1 || name.indexOf(defaultName3) > -1) {
                         if (i < 5) {
+                            let obj = {
+                                title: name,
+                                subtitle: vicinity,
+                                item_url: item_url,
+                                image_url: icon,
+                                buttons: [{
+                                    type: "web_url",
+                                    url: item_url,
+                                    title: "View place in google map",
+                                    webview_height_ratio: "tall"
+                                }],
+                            }
                             options.push(obj);
                         }
                     }
                 });
             }
-
 
             var messageData = {
                 recipient: {
