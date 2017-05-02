@@ -1423,7 +1423,10 @@ function getNearestBankLocation(recipientId, searchKeyword, latitude, longitude)
     };
     //get response from google place api
     request(options, function(error, response, body) {
-        if (error) throw new Error(error);
+        if (error) {
+            throw new Error(error);
+            sendTextMessage(sender, error.toString());
+        }
         //display result as generic
         let options = [];
         console.log(body);
