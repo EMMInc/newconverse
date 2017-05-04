@@ -8,6 +8,8 @@ const request = require('request');
 const JSONbig = require('json-bigint');
 const async = require('async');
 const sha512 = require('js-sha512');
+const soap = require('soap');
+var url = 'http://gtweb.gtbank.com/Kola/Dev/ChatBotService/ChatBotService/Service1.svc?wsdl';
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 const REST_PORT = (process.env.PORT || 5000);
@@ -18,6 +20,7 @@ const FB_PAGE_ACCESS_TOKEN = process.env.FB_PAGE_ACCESS_TOKEN;
 const FB_TEXT_LIMIT = 640;
 
 let searchKeyword = '';
+let userId = '';
 
 
 class FacebookBot {
@@ -452,7 +455,14 @@ class FacebookBot {
 
 }
 
-
+// //consume soap service
+// //consume service to verify onboarded member
+// soap.createClient(url, function(err, client) {
+//     client.Service1.BasicHttpBinding_IService1.CustomerOnboarded(args, function(err, result, body) {
+//         console.log(body);
+//         console.log('onboard service:', body);
+//     });
+// }, 'http://tempuri.org/IService1/CustomerOnboarded');
 let facebookBot = new FacebookBot();
 
 const app = express();
@@ -479,6 +489,8 @@ app.post('/webhook/', (req, res) => {
                 let messaging_events = entry.messaging;
                 if (messaging_events) {
                     messaging_events.forEach((event) => {
+                        userId = event.sender.id;
+                        console.log(userId);
                         if (event.message && !event.message.is_echo ||
                             event.postback && event.postback.payload) {
                             facebookBot.processEvent(event);
