@@ -504,11 +504,11 @@ app.get('/views/onboardserviceyes.html', function(request, response) {
     response.sendFile(__dirname + "/views/" + "onboardserviceyes.html");
 });
 
-
-app.get('/onboard_response', function(request, response) {
+//get response from gtb onboarded response
+app.get('/onboarded_response', function(request, response) {
     let res = {
-        firstname: request.query.first_name,
-        lastname: request.query.last_name,
+        status: request.query.status,
+        message: request.query.message,
     };
     console.log(res);
     response.end(JSON.stringify(res));
