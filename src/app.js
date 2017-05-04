@@ -509,6 +509,7 @@ app.get('/onboarded_response', function(request, response) {
     let res = {
         status: request.query.status,
         message: request.query.message,
+        facebookId: request.query.facebookId
     };
     console.log(res);
     response.end(JSON.stringify(res));
