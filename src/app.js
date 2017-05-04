@@ -7,6 +7,7 @@ const uuid = require('node-uuid');
 const request = require('request');
 const JSONbig = require('json-bigint');
 const async = require('async');
+const sha512 = require('js-sha512');
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 const REST_PORT = (process.env.PORT || 5000);
@@ -513,6 +514,14 @@ app.get('/onboarded_response', function(request, response) {
     };
     console.log(res);
     response.end(JSON.stringify(res));
+});
+
+//test sha512
+app.get('/hash', function(request, response) {
+    let name = request.query.hashname;
+    let encrypted = sha512(name);
+    console.log(encrypted);
+    response.end(encrypted);
 });
 
 //get open account html file
