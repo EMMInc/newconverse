@@ -251,41 +251,36 @@ class FacebookBot {
 
     //which webhook event
     getEventText(event) {
-        if (event.message) {
-            if (event.message.quick_reply && event.message.quick_reply.payload) {
-                return event.message.quick_reply.payload;
+            if (event.message) {
+                if (event.message.quick_reply && event.message.quick_reply.payload) {
+                    return event.message.quick_reply.payload;
+                }
+
+                if (event.message.text) {
+                    return event.message.text;
+                }
             }
 
-            if (event.message.text) {
-                return event.message.text;
+            if (event.postback && event.postback.payload) {
+                return event.postback.payload;
             }
+            return null;
         }
-
-        if (event.postback && event.postback.payload) {
-            return event.postback.payload;
-        }
-
-        return null;
-
-    }
-
+        //process event
     processEvent(event) {
         const sender = event.sender.id.toString();
         //this can be used globally
         //  sender_id = sender;
         const text = this.getEventText(event);
         const message = event.message;
-
-        // // You may get a text or attachment but not both
+        // You may get a text or attachment but not both
         const messageAttachments = message.attachments;
-
         if (text) {
-
             // Handle a text message from this sender
             if (!this.sessionIds.has(sender)) {
                 this.sessionIds.set(sender, uuid.v4());
             }
-
+            //
             console.log("Text", text);
             //send user's text to api.ai service
             let apiaiRequest = this.apiAiService.textRequest(text, {
@@ -507,6 +502,16 @@ app.post('/webhook/', (req, res) => {
 //get onboard html file
 app.get('/views/onboardserviceyes.html', function(request, response) {
     response.sendFile(__dirname + "/views/" + "onboardserviceyes.html");
+});
+
+
+app.get('/onboard_response', function(request, response) {
+    res = {
+        firstname: request.query.first_name,
+        lastname: request.query.last_name,
+    };
+    console.log(res);
+    response.end(JSON.stringify(res));
 });
 
 //get open account html file
@@ -1434,7 +1439,6 @@ function getNearestBankLocation(recipientId, searchKeyword, latitude, longitude)
         const places = JSON.parse(body);
         let results = places.results;
         let i = 0;
-
         //  const photoBaseUrl = 'https://maps.googleapis.com/maps/api/place/photo?';
         if (results.length > 0) {
             if (isDefined(results)) {
@@ -1491,13 +1495,11 @@ function getNearestBankLocation(recipientId, searchKeyword, latitude, longitude)
                     }
                 }
             };
-
             callSendAPI(messageData);
         } else {
             sendTextMessage(sender, "No search result found");
         }
     });
-
 }
 //check if result or array is defined
 function isDefined(obj) {
@@ -1507,12 +1509,8 @@ function isDefined(obj) {
     if (!obj) {
         return false;
     }
-
     return obj != null;
 }
-
-
-
 /*
  * Call the Send API. The message data goes in the body. If successful, we'll 
  * get the message id in a response 
@@ -1520,27 +1518,30 @@ function isDefined(obj) {
  */
 function callSendAPI(messageData) {
     request({
-        uri: 'https://graph.facebook.com/v2.6/me/messages',
-        qs: { access_token: FB_PAGE_ACCESS_TOKEN },
-        method: 'POST',
-        json: messageData
+            uri: 'https://graph.facebook.com/v2.6/me/messages',
+            qs: { access_token: FB_PAGE_ACCESS_TOKEN },
+            method: 'POST',
+            json: messageData
 
-    }, function(error, response, body) {
-        if (!error && response.statusCode == 200) {
-            var recipientId = body.recipient_id;
-            var messageId = body.message_id;
+        },
 
-            if (messageId) {
-                console.log("Successfully sent message with id %s to recipient %s",
-                    messageId, recipientId);
+
+        function(error, response, body) {
+            if (!error && response.statusCode == 200) {
+                var recipientId = body.recipient_id;
+                var messageId = body.message_id;
+
+                if (messageId) {
+                    console.log("Successfully sent message with id %s to recipient %s",
+                        messageId, recipientId);
+                } else {
+                    console.log("Successfully called Send API for recipient %s",
+                        recipientId);
+                }
             } else {
-                console.log("Successfully called Send API for recipient %s",
-                    recipientId);
+                console.error("Failed calling Send API", response.statusCode, response.statusMessage, body.error);
             }
-        } else {
-            console.error("Failed calling Send API", response.statusCode, response.statusMessage, body.error);
-        }
-    });
+        });
 }
 
 app.listen(REST_PORT, () => {
