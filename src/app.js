@@ -506,7 +506,7 @@ app.get('/views/onboardserviceyes.html', function(request, response) {
 
 
 app.get('/onboard_response', function(request, response) {
-    res = {
+    let res = {
         firstname: request.query.first_name,
         lastname: request.query.last_name,
     };
