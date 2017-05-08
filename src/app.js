@@ -455,18 +455,25 @@ class FacebookBot {
 
 }
 
-// //consume soap service
-// //consume service to verify onboarded member
-// soap.createClient(url, function(err, client) {
-//     client.Service1.BasicHttpBinding_IService1.CustomerOnboarded(args, function(err, result, body) {
-//         console.log(body);
-//         console.log('onboard service:', body);
-//     });
-// }, 'http://tempuri.org/IService1/CustomerOnboarded');
+//consume soap service
+//consume service to verify onboarded member
+function customerOnboarded() {
+    return new Promise(function(resolve, reject) {
+        soap.createClient(url, function(err, client) {
+            if (err) throw new Error(err);
+            var args = {
+                UserId: userId,
+                hash: sha512(userId)
+            }
+            client.Service1.BasicHttpBinding_IService1.CustomerOnboarded({ userId: userId, hash: sha512(userId) }, options, function(err, result) {
+                // result is a javascript object
+                console.log(result);
+            });
+        });
+    });
+}
 let facebookBot = new FacebookBot();
-
 const app = express();
-
 app.use(bodyParser.text({ type: 'application/json' }));
 //app.use(express.static('public'));
 app.get('/webhook/', (req, res) => {

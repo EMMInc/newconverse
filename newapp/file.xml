@@ -1,0 +1,414 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:tns="http://tempuri.org/" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" targetNamespace="http://tempuri.org/" name="Service1">
+<wsp:Policy wsu:Id="BasicHttpsBinding_IService1_policy">
+<wsp:ExactlyOne>
+<wsp:All>
+<sp:TransportBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+<wsp:Policy>
+<sp:TransportToken>
+<wsp:Policy>
+<sp:HttpsToken RequireClientCertificate="false"/>
+</wsp:Policy>
+</sp:TransportToken>
+<sp:AlgorithmSuite>
+<wsp:Policy>
+<sp:Basic256/>
+</wsp:Policy>
+</sp:AlgorithmSuite>
+<sp:Layout>
+<wsp:Policy>
+<sp:Strict/>
+</wsp:Policy>
+</sp:Layout>
+</wsp:Policy>
+</sp:TransportBinding>
+</wsp:All>
+</wsp:ExactlyOne>
+</wsp:Policy>
+<wsdl:types>
+<xs:schema targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+<xs:import namespace="http://schemas.datacontract.org/2004/07/ChatBotService"/>
+<xs:element name="CustomerOnboarded">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="value" xmlns:q1="http://schemas.datacontract.org/2004/07/ChatBotService" type="q1:Request" nillable="true" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="CustomerOnboardedResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="CustomerOnboardedResult" type="q2:Response" nillable="true" minOccurs="0" xmlns:q2="http://schemas.datacontract.org/2004/07/ChatBotService"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="BotRegistration">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="value" type="q3:Request" nillable="true" minOccurs="0" xmlns:q3="http://schemas.datacontract.org/2004/07/ChatBotService"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="BotRegistrationResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="BotRegistrationResult" type="q4:Response" nillable="true" minOccurs="0" xmlns:q4="http://schemas.datacontract.org/2004/07/ChatBotService"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="BotAccountOpening">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="value" type="q5:Request" nillable="true" minOccurs="0" xmlns:q5="http://schemas.datacontract.org/2004/07/ChatBotService"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="BotAccountOpeningResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="BotAccountOpeningResult" type="q6:Response" nillable="true" minOccurs="0" xmlns:q6="http://schemas.datacontract.org/2004/07/ChatBotService"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="Verify737BotBVN">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="value" type="q7:Request" nillable="true" minOccurs="0" xmlns:q7="http://schemas.datacontract.org/2004/07/ChatBotService"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="Verify737BotBVNResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="Verify737BotBVNResult" type="q8:Response" nillable="true" minOccurs="0" xmlns:q8="http://schemas.datacontract.org/2004/07/ChatBotService"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="AccountOpeningBVN">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="value" type="q9:Request" nillable="true" minOccurs="0" xmlns:q9="http://schemas.datacontract.org/2004/07/ChatBotService"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="AccountOpeningBVNResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="AccountOpeningBVNResult" type="q10:Response" nillable="true" minOccurs="0" xmlns:q10="http://schemas.datacontract.org/2004/07/ChatBotService"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="SelfAirtimePurchase">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="value" type="q11:Request" nillable="true" minOccurs="0" xmlns:q11="http://schemas.datacontract.org/2004/07/ChatBotService"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="SelfAirtimePurchaseResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="SelfAirtimePurchaseResult" type="q12:Response" nillable="true" minOccurs="0" xmlns:q12="http://schemas.datacontract.org/2004/07/ChatBotService"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="ThirdPartyAirtimePurchase">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="value" type="q13:Request" nillable="true" minOccurs="0" xmlns:q13="http://schemas.datacontract.org/2004/07/ChatBotService"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="ThirdPartyAirtimePurchaseResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="ThirdPartyAirtimePurchaseResult" type="q14:Response" nillable="true" minOccurs="0" xmlns:q14="http://schemas.datacontract.org/2004/07/ChatBotService"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+</xs:schema>
+<xs:schema xmlns:tns="http://schemas.microsoft.com/2003/10/Serialization/" targetNamespace="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="qualified">
+<xs:element name="anyType" type="xs:anyType" nillable="true"/>
+<xs:element name="anyURI" type="xs:anyURI" nillable="true"/>
+<xs:element name="base64Binary" type="xs:base64Binary" nillable="true"/>
+<xs:element name="boolean" type="xs:boolean" nillable="true"/>
+<xs:element name="byte" type="xs:byte" nillable="true"/>
+<xs:element name="dateTime" type="xs:dateTime" nillable="true"/>
+<xs:element name="decimal" type="xs:decimal" nillable="true"/>
+<xs:element name="double" type="xs:double" nillable="true"/>
+<xs:element name="float" type="xs:float" nillable="true"/>
+<xs:element name="int" type="xs:int" nillable="true"/>
+<xs:element name="long" type="xs:long" nillable="true"/>
+<xs:element name="QName" type="xs:QName" nillable="true"/>
+<xs:element name="short" type="xs:short" nillable="true"/>
+<xs:element name="string" type="xs:string" nillable="true"/>
+<xs:element name="unsignedByte" type="xs:unsignedByte" nillable="true"/>
+<xs:element name="unsignedInt" type="xs:unsignedInt" nillable="true"/>
+<xs:element name="unsignedLong" type="xs:unsignedLong" nillable="true"/>
+<xs:element name="unsignedShort" type="xs:unsignedShort" nillable="true"/>
+<xs:element name="char" type="tns:char" nillable="true"/>
+<xs:simpleType name="char">
+<xs:restriction base="xs:int"/>
+</xs:simpleType>
+<xs:element name="duration" type="tns:duration" nillable="true"/>
+<xs:simpleType name="duration">
+<xs:restriction base="xs:duration">
+<xs:pattern value="\-?P(\d*D)?(T(\d*H)?(\d*M)?(\d*(\.\d*)?S)?)?"/>
+<xs:minInclusive value="-P10675199DT2H48M5.4775808S"/>
+<xs:maxInclusive value="P10675199DT2H48M5.4775807S"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:element name="guid" type="tns:guid" nillable="true"/>
+<xs:simpleType name="guid">
+<xs:restriction base="xs:string">
+<xs:pattern value="[\da-fA-F]{8}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{12}"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:attribute name="FactoryType" type="xs:QName"/>
+<xs:attribute name="Id" type="xs:ID"/>
+<xs:attribute name="Ref" type="xs:IDREF"/>
+</xs:schema>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/ChatBotService" targetNamespace="http://schemas.datacontract.org/2004/07/ChatBotService" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+<xs:complexType name="Request">
+<xs:sequence>
+<xs:element name="Amount" type="xs:double" minOccurs="0"/>
+<xs:element name="BVN" type="xs:string" nillable="true" minOccurs="0"/>
+<xs:element name="DateOfBirth" type="xs:dateTime" minOccurs="0"/>
+<xs:element name="Email" type="xs:string" nillable="true" minOccurs="0"/>
+<xs:element name="FirstName" type="xs:string" nillable="true" minOccurs="0"/>
+<xs:element name="Gender" type="xs:string" nillable="true" minOccurs="0"/>
+<xs:element name="LastName" type="xs:string" nillable="true" minOccurs="0"/>
+<xs:element name="MobNum" type="xs:string" nillable="true" minOccurs="0"/>
+<xs:element name="MobileNumber" type="xs:string" nillable="true" minOccurs="0"/>
+<xs:element name="Pin" type="xs:string" nillable="true" minOccurs="0"/>
+<xs:element name="RequestType" type="xs:string" nillable="true" minOccurs="0"/>
+<xs:element name="UserId" type="xs:string" nillable="true" minOccurs="0"/>
+<xs:element name="hash" type="xs:string" nillable="true" minOccurs="0"/>
+<xs:element name="otp" type="xs:string" nillable="true" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="Request" type="tns:Request" nillable="true"/>
+<xs:complexType name="Response">
+<xs:sequence>
+<xs:element name="Hash" type="xs:string" nillable="true" minOccurs="0"/>
+<xs:element name="ResponseCode" type="xs:string" nillable="true" minOccurs="0"/>
+<xs:element name="ResponseDesc" type="xs:string" nillable="true" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="Response" type="tns:Response" nillable="true"/>
+</xs:schema>
+</wsdl:types>
+<wsdl:message name="IService1_CustomerOnboarded_InputMessage">
+<wsdl:part name="parameters" element="tns:CustomerOnboarded"/>
+</wsdl:message>
+<wsdl:message name="IService1_CustomerOnboarded_OutputMessage">
+<wsdl:part name="parameters" element="tns:CustomerOnboardedResponse"/>
+</wsdl:message>
+<wsdl:message name="IService1_BotRegistration_InputMessage">
+<wsdl:part name="parameters" element="tns:BotRegistration"/>
+</wsdl:message>
+<wsdl:message name="IService1_BotRegistration_OutputMessage">
+<wsdl:part name="parameters" element="tns:BotRegistrationResponse"/>
+</wsdl:message>
+<wsdl:message name="IService1_BotAccountOpening_InputMessage">
+<wsdl:part name="parameters" element="tns:BotAccountOpening"/>
+</wsdl:message>
+<wsdl:message name="IService1_BotAccountOpening_OutputMessage">
+<wsdl:part name="parameters" element="tns:BotAccountOpeningResponse"/>
+</wsdl:message>
+<wsdl:message name="IService1_Verify737BotBVN_InputMessage">
+<wsdl:part name="parameters" element="tns:Verify737BotBVN"/>
+</wsdl:message>
+<wsdl:message name="IService1_Verify737BotBVN_OutputMessage">
+<wsdl:part name="parameters" element="tns:Verify737BotBVNResponse"/>
+</wsdl:message>
+<wsdl:message name="IService1_AccountOpeningBVN_InputMessage">
+<wsdl:part name="parameters" element="tns:AccountOpeningBVN"/>
+</wsdl:message>
+<wsdl:message name="IService1_AccountOpeningBVN_OutputMessage">
+<wsdl:part name="parameters" element="tns:AccountOpeningBVNResponse"/>
+</wsdl:message>
+<wsdl:message name="IService1_SelfAirtimePurchase_InputMessage">
+<wsdl:part name="parameters" element="tns:SelfAirtimePurchase"/>
+</wsdl:message>
+<wsdl:message name="IService1_SelfAirtimePurchase_OutputMessage">
+<wsdl:part name="parameters" element="tns:SelfAirtimePurchaseResponse"/>
+</wsdl:message>
+<wsdl:message name="IService1_ThirdPartyAirtimePurchase_InputMessage">
+<wsdl:part name="parameters" element="tns:ThirdPartyAirtimePurchase"/>
+</wsdl:message>
+<wsdl:message name="IService1_ThirdPartyAirtimePurchase_OutputMessage">
+<wsdl:part name="parameters" element="tns:ThirdPartyAirtimePurchaseResponse"/>
+</wsdl:message>
+<wsdl:portType name="IService1">
+<wsdl:operation name="CustomerOnboarded">
+<wsdl:input message="tns:IService1_CustomerOnboarded_InputMessage" wsaw:Action="http://tempuri.org/IService1/CustomerOnboarded"/>
+<wsdl:output message="tns:IService1_CustomerOnboarded_OutputMessage" wsaw:Action="http://tempuri.org/IService1/CustomerOnboardedResponse"/>
+</wsdl:operation>
+<wsdl:operation name="BotRegistration">
+<wsdl:input message="tns:IService1_BotRegistration_InputMessage" wsaw:Action="http://tempuri.org/IService1/BotRegistration"/>
+<wsdl:output message="tns:IService1_BotRegistration_OutputMessage" wsaw:Action="http://tempuri.org/IService1/BotRegistrationResponse"/>
+</wsdl:operation>
+<wsdl:operation name="BotAccountOpening">
+<wsdl:input message="tns:IService1_BotAccountOpening_InputMessage" wsaw:Action="http://tempuri.org/IService1/BotAccountOpening"/>
+<wsdl:output message="tns:IService1_BotAccountOpening_OutputMessage" wsaw:Action="http://tempuri.org/IService1/BotAccountOpeningResponse"/>
+</wsdl:operation>
+<wsdl:operation name="Verify737BotBVN">
+<wsdl:input message="tns:IService1_Verify737BotBVN_InputMessage" wsaw:Action="http://tempuri.org/IService1/Verify737BotBVN"/>
+<wsdl:output message="tns:IService1_Verify737BotBVN_OutputMessage" wsaw:Action="http://tempuri.org/IService1/Verify737BotBVNResponse"/>
+</wsdl:operation>
+<wsdl:operation name="AccountOpeningBVN">
+<wsdl:input message="tns:IService1_AccountOpeningBVN_InputMessage" wsaw:Action="http://tempuri.org/IService1/AccountOpeningBVN"/>
+<wsdl:output message="tns:IService1_AccountOpeningBVN_OutputMessage" wsaw:Action="http://tempuri.org/IService1/AccountOpeningBVNResponse"/>
+</wsdl:operation>
+<wsdl:operation name="SelfAirtimePurchase">
+<wsdl:input message="tns:IService1_SelfAirtimePurchase_InputMessage" wsaw:Action="http://tempuri.org/IService1/SelfAirtimePurchase"/>
+<wsdl:output message="tns:IService1_SelfAirtimePurchase_OutputMessage" wsaw:Action="http://tempuri.org/IService1/SelfAirtimePurchaseResponse"/>
+</wsdl:operation>
+<wsdl:operation name="ThirdPartyAirtimePurchase">
+<wsdl:input message="tns:IService1_ThirdPartyAirtimePurchase_InputMessage" wsaw:Action="http://tempuri.org/IService1/ThirdPartyAirtimePurchase"/>
+<wsdl:output message="tns:IService1_ThirdPartyAirtimePurchase_OutputMessage" wsaw:Action="http://tempuri.org/IService1/ThirdPartyAirtimePurchaseResponse"/>
+</wsdl:operation>
+</wsdl:portType>
+<wsdl:binding name="BasicHttpBinding_IService1" type="tns:IService1">
+<soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+<wsdl:operation name="CustomerOnboarded">
+<soap:operation style="document" soapAction="http://tempuri.org/IService1/CustomerOnboarded"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="BotRegistration">
+<soap:operation style="document" soapAction="http://tempuri.org/IService1/BotRegistration"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="BotAccountOpening">
+<soap:operation style="document" soapAction="http://tempuri.org/IService1/BotAccountOpening"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="Verify737BotBVN">
+<soap:operation style="document" soapAction="http://tempuri.org/IService1/Verify737BotBVN"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="AccountOpeningBVN">
+<soap:operation style="document" soapAction="http://tempuri.org/IService1/AccountOpeningBVN"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="SelfAirtimePurchase">
+<soap:operation style="document" soapAction="http://tempuri.org/IService1/SelfAirtimePurchase"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="ThirdPartyAirtimePurchase">
+<soap:operation style="document" soapAction="http://tempuri.org/IService1/ThirdPartyAirtimePurchase"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+</wsdl:binding>
+<wsdl:binding name="BasicHttpsBinding_IService1" type="tns:IService1">
+<wsp:PolicyReference URI="#BasicHttpsBinding_IService1_policy"/>
+<soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+<wsdl:operation name="CustomerOnboarded">
+<soap:operation style="document" soapAction="http://tempuri.org/IService1/CustomerOnboarded"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="BotRegistration">
+<soap:operation style="document" soapAction="http://tempuri.org/IService1/BotRegistration"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="BotAccountOpening">
+<soap:operation style="document" soapAction="http://tempuri.org/IService1/BotAccountOpening"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="Verify737BotBVN">
+<soap:operation style="document" soapAction="http://tempuri.org/IService1/Verify737BotBVN"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="AccountOpeningBVN">
+<soap:operation style="document" soapAction="http://tempuri.org/IService1/AccountOpeningBVN"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="SelfAirtimePurchase">
+<soap:operation style="document" soapAction="http://tempuri.org/IService1/SelfAirtimePurchase"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="ThirdPartyAirtimePurchase">
+<soap:operation style="document" soapAction="http://tempuri.org/IService1/ThirdPartyAirtimePurchase"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+</wsdl:binding>
+<wsdl:service name="Service1">
+<wsdl:port name="BasicHttpBinding_IService1" binding="tns:BasicHttpBinding_IService1">
+<soap:address location="http://gtweb.gtbank.com/Kola/Dev/ChatBotService/ChatBotService/Service1.svc"/>
+</wsdl:port>
+<wsdl:port name="BasicHttpsBinding_IService1" binding="tns:BasicHttpsBinding_IService1">
+<soap:address location="https://appserver1.gtbanklab.com/Kola/Dev/ChatBotService/ChatBotService/Service1.svc"/>
+</wsdl:port>
+</wsdl:service>
+</wsdl:definitions>
