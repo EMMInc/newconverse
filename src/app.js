@@ -468,7 +468,7 @@ function customerOnboarded() {
             UserId: userId,
             hash: sha512(userId)
         }
-        client.Service1.BasicHttpBinding_IService1.CustomerOnboarded(args, options, function(err, result) {
+        client.Service1.BasicHttpBinding_IService1.CustomerOnboarded(args, function(err, result) {
             // result is a javascript object
             console.log('result expected from wsdl' + args.toString());
             console.log(result);
