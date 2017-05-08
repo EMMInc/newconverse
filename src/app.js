@@ -305,13 +305,16 @@ class FacebookBot {
                     searchKeyword = response.result.parameters.keyword;
                     if (action == 'onboard737Service.onboard737Service-yes') {
                         sendTypingOn(sender);
-                        sendOnBoardMessage(sender);
+                        customerOnboarded();
+                        // sendOnBoardMessage(sender);
                     } else if (action === 'openaccount.openaccount-yes') {
                         sendTypingOn(sender);
-                        sendOpenAccountYesMessage(sender);
+                        customerOnboarded();
+                        //sendOpenAccountYesMessage(sender);
                     } else if (action === 'openaccount.openaccount-no') {
                         sendTypingOn(sender);
-                        sendOpenAccountNoMessage(sender);
+                        customerOnboarded();
+                        //  sendOpenAccountNoMessage(sender);
                     } else if (action == 'location.search') {
                         sendLocation(sender);
                     } else {
