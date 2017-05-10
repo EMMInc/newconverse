@@ -472,7 +472,7 @@ function customerOnboarded() {
             //console.log('result expected from wsdl' + args.toString());
         client.Service1.BasicHttpBinding_IService1.CustomerOnboarded(args, function(err, result) {
             // result is a javascript object
-            console.log(userId);
+            console.log(userId + sha512(userId));
             //console.log(result);
         });
     });
