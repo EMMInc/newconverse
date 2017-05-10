@@ -464,7 +464,7 @@ function customerOnboarded() {
 
     // return new Promise(function(resolve, reject) {
     soap.createClient(url, function(err, client) {
-        if (err) throw new Error(err);
+        //if (err) throw new Error(err);
         let args = {
             UserId: userId,
             hash: sha512(userId)
