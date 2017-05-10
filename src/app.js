@@ -472,9 +472,11 @@ function customerOnboarded() {
             //console.log('result expected from wsdl' + args.toString());
         client.Service1.BasicHttpBinding_IService1.CustomerOnboarded(args, function(err, result) {
             // result is a javascript object
-            console.log(userId + sha512(userId));
+
+
+            console.log(userId + "hash = " + sha512(userId));
             console.log(result);
-        }, 'http://schemas.datacontract.org/2004/07/ChatBotService/CustomerOnboarded/');
+        }, 'http://schemas.datacontract.org/2004/07/ChatBotService');
     });
     // });
 }
