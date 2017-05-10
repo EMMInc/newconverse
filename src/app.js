@@ -461,22 +461,20 @@ class FacebookBot {
 //consume soap service
 //consume service to verify onboarded member
 function customerOnboarded() {
-
     // return new Promise(function(resolve, reject) {
     soap.createClient(url, function(err, client) {
         if (err) throw new Error(err);
-        const args = {
+        let args = {
             UserId: userId,
             hash: sha512(userId)
         };
+        let options = {};
         //console.log('result expected from wsdl' + args.toString());
-        client.Service1.BasicHttpBinding_IService1.CustomerOnboarded(args, function(err, result) {
+        client.Service1.BasicHttpBinding_IService1.CustomerOnboarded(args, options, function(err, result, envelope, soapHeader) {
             // result is a javascript object
+            console.log('Response Envelope: \n' + envelope);
             console.log(userId + "hash = " + sha512(userId));
-            console.log(result);
-            result.Service1.BasicHttpBinding_IService1.CustomerOnboardedResponse(function(err, result) {
-                console.log(result);
-            });
+            console.log(JSON.stringify(result));
         });
     });
     // });
