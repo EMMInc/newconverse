@@ -473,8 +473,8 @@ function customerOnboarded() {
         client.Service1.BasicHttpBinding_IService1.CustomerOnboarded(args, function(err, result) {
             // result is a javascript object
             console.log(userId + sha512(userId));
-            console.log(JSON.parse(result));
-        });
+            console.log(result);
+        }, 'http://schemas.datacontract.org/2004/07/ChatBotService/CustomerOnboarded/');
     });
     // });
 }
