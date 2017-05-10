@@ -465,8 +465,8 @@ function customerOnboarded() {
     soap.createClient(url, function(err, client) {
         if (err) throw new Error(err);
         let args = {
-            UserId: userId,
-            hash: sha512(userId)
+            FacebookId: userId,
+            Hash: sha512(userId)
         };
         let options = {};
         //console.log('result expected from wsdl' + args.toString());
