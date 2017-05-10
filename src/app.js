@@ -473,7 +473,7 @@ function customerOnboarded() {
         client.Service1.BasicHttpBinding_IService1.CustomerOnboarded(args, function(err, result) {
             // result is a javascript object
             console.log(userId + sha512(userId));
-            //console.log(result);
+            console.log(JSON.parse(result));
         });
     });
     // });
