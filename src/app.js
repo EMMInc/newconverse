@@ -474,6 +474,9 @@ function customerOnboarded() {
             // result is a javascript object
             console.log(userId + "hash = " + sha512(userId));
             console.log(result);
+            result.Service1.BasicHttpBinding_IService1.CustomerOnboardedResponse(function(err, result) {
+                console.log(result);
+            });
         });
     });
     // });
