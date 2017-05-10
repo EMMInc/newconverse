@@ -465,18 +465,16 @@ function customerOnboarded() {
     // return new Promise(function(resolve, reject) {
     soap.createClient(url, function(err, client) {
         if (err) throw new Error(err);
-        let args = {
-                UserId: userId,
-                hash: sha512(userId)
-            }
-            //console.log('result expected from wsdl' + args.toString());
+        const args = {
+            UserId: userId,
+            hash: sha512(userId)
+        };
+        //console.log('result expected from wsdl' + args.toString());
         client.Service1.BasicHttpBinding_IService1.CustomerOnboarded(args, function(err, result) {
             // result is a javascript object
-
-
             console.log(userId + "hash = " + sha512(userId));
             console.log(result);
-        }, 'http://schemas.datacontract.org/2004/07/ChatBotService');
+        });
     });
     // });
 }
