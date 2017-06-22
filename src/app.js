@@ -13,9 +13,9 @@ var url = 'http://gtweb.gtbank.com/Kola/Dev/ChatBotService/ChatBotService/Servic
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 const REST_PORT = (process.env.PORT || 5000);
-const APIAI_ACCESS_TOKEN = process.env.APIAI_ACCESS_TOKEN;
+const APIAI_ACCESS_TOKEN = 'c17fdbd356aa45d18348b18806ddadc0';
 const APIAI_LANG = process.env.APIAI_LANG || 'en';
-const FB_VERIFY_TOKEN = 'abcd124';
+const FB_VERIFY_TOKEN = process.env.FB_VERIFY_TOKEN;
 const FB_PAGE_ACCESS_TOKEN = process.env.FB_PAGE_ACCESS_TOKEN;
 const FB_TEXT_LIMIT = 640;
 
