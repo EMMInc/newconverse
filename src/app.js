@@ -3,15 +3,13 @@
 const apiai = require('apiai');
 const express = require('express');
 const bodyParser = require('body-parser');
-const uuid = require('node-uuid');
+const uuid = require('uuid');
 const request = require('request');
 const JSONbig = require('json-bigint');
 const async = require('async');
 const sha512 = require('js-sha512');
 const soap = require('soap');
-var url = 'http://gtweb.gtbank.com/Kola/Dev/ChatBotService/ChatBotService/Service1.svc?wsdl';
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
-
 const REST_PORT = (process.env.PORT || 5000);
 const APIAI_ACCESS_TOKEN = process.env.APIAI_ACCESS_TOKEN;
 const APIAI_LANG = process.env.APIAI_LANG || 'en';
@@ -19,13 +17,92 @@ const FB_VERIFY_TOKEN = process.env.FB_VERIFY_TOKEN;
 const FB_PAGE_ACCESS_TOKEN = process.env.FB_PAGE_ACCESS_TOKEN;
 const FB_TEXT_LIMIT = 640;
 
+var http = require('http');
+var xml2js = require('xml2js');
+var parseString = require('xml2js').parseString ;
+var http_optionsco = {
+  hostname: 'gtweb.gtbank.com',
+  path: '/APIManager/Transfer/service.asmx?wsdl',
+  method: 'POST',
+  headers: {
+    'Content-Type': 'text/xml',
+    'SOAPAction': 'http://tempuri.org/CustomerOnboarded' ,
+    'Content-Length': xml.length
+  }
+} ;
+
+var http_optionsbao = {
+  hostname: 'gtweb.gtbank.com',
+  path: '/APIManager/Transfer/service.asmx?wsdl',
+  method: 'POST',
+  headers: {
+    'Content-Type': 'text/xml',
+    'SOAPAction': 'http://tempuri.org/BotAccountOpening' ,
+    'Content-Length': xml.length
+  }
+} ;
+
+var http_optionslaob = {
+  hostname: 'gtweb.gtbank.com',
+  path: '/APIManager/Transfer/service.asmx?wsdl',
+  method: 'POST',
+  headers: {
+    'Content-Type': 'text/xml',
+    'SOAPAction': 'http://tempuri.org/AccountOpeningBVN' ,
+    'Content-Length': xml.length
+  }
+} ;
+
+var http_optionsbr = {
+  hostname: 'gtweb.gtbank.com',
+  path: '/APIManager/Transfer/service.asmx?wsdl',
+  method: 'POST',
+  headers: {
+    'Content-Type': 'text/xml',
+    'SOAPAction': 'http://tempuri.org/BotRegistration' ,
+    'Content-Length': xml.length
+  }
+} ;
+
+var http_optionsatp = {
+  hostname: 'gtweb.gtbank.com',
+  path: '/APIManager/Transfer/service.asmx?wsdl',
+  method: 'POST',
+  headers: {
+    'Content-Type': 'text/xml',
+    'SOAPAction': 'http://tempuri.org/SelfAirtimePurchase' ,
+    'Content-Length': xml.length
+  }
+} ;
+
+var http_optiontpatp = {
+  hostname: 'gtweb.gtbank.com',
+  path: '/APIManager/Transfer/service.asmx?wsdl',
+  method: 'POST',
+  headers: {
+    'Content-Type': 'text/xml',
+    'SOAPAction': 'http://tempuri.org/ThirdPartyAirtimePurchas' ,
+    'Content-Length': xml.length
+  }
+} ;
+
+
+var xmlco = '<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:tem="http://tempuri.org/"><soap:Header/><soap:Body><tem:CustomerOnboarded><!--Optional:--><tem:request><!--Optional:--><tem:UserId>0246625695</tem:UserId><!--Optional:--><tem:hash>jkkll</tem:hash><!--Optional:--><tem:FirstName>?</tem:FirstName><!--Optional:--><tem:LastName>?</tem:LastName><tem:DateOfBirth>0001-01-01T00:00:00</tem:DateOfBirth><!--Optional:--><tem:Gender>?</tem:Gender><!--Optional:--><tem:MobileNumber>?</tem:MobileNumber><!--Optional:--><tem:Email>?</tem:Email><!--Optional:--><tem:Pin>?</tem:Pin><!--Optional:--><tem:BVN>?</tem:BVN><!--Optional:--><tem:otp>?</tem:otp><tem:Amount>0</tem:Amount><!--Optional:--><tem:RequestType>?</tem:RequestType><!--Optional:--><tem:MobNum>?</tem:MobNum><!--Optional:--><tem:branchCode>?</tem:branchCode></tem:request></tem:CustomerOnboarded></soap:Body></soap:Envelope>';
+var xmlbao = '<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:tem="http://tempuri.org/"><soap:Header/><soap:Body><tem:BotAccountOpening><!--Optional:--><tem:request><!--Optional:--><tem:UserId>hfhjd</tem:UserId><!--Optional:--><tem:hash>bfddg</tem:hash><!--Optional:--><tem:FirstName>fsasff565656sa</tem:FirstName><!--Optional:--><tem:LastName>fsfsasafsf</tem:LastName><tem:DateOfBirth>0001-01-01T00:00:00</tem:DateOfBirth><!--Optional:--><tem:Gender>M</tem:Gender><!--Optional:--><tem:MobileNumber>4454645522564564</tem:MobileNumber><!--Optional:--><tem:Email>haderinko@yahoo.ca</tem:Email><!--Optional:--><tem:Pin>0258</tem:Pin><!--Optional:--><tem:BVN>896856456456456</tem:BVN><!--Optional:--><tem:otp>555</tem:otp><tem:Amount>0</tem:Amount><!--Optional:--><tem:RequestType>kjkjs</tem:RequestType><!--Optional:--><tem:MobNum>6565665</tem:MobNum><!--Optional:--><tem:branchCode>205</tem:branchCode></tem:request></tem:BotAccountOpening></soap:Body></soap:Envelope>';
+var xmlaob = '<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:tem="http://tempuri.org/"><soap:Header/><soap:Body><tem:AccountOpeningBVN><!--Optional:--><tem:request><!--Optional:--><tem:UserId>55454</tem:UserId><!--Optional:--><tem:hash>kjhdkjhdakjhkjhd4564</tem:hash><!--Optional:--><tem:FirstName>kjhdskjhkjhda</tem:FirstName><!--Optional:--><tem:LastName>daadaddaaf</tem:LastName><tem:DateOfBirth>0001-01-01T00:00:00</tem:DateOfBirth><!--Optional:--><tem:Gender>M</tem:Gender><!--Optional:--><tem:MobileNumber>455465645656</tem:MobileNumber><!--Optional:--><tem:Email>jhjhhjjh@yahooo.com</tem:Email><!--Optional:--><tem:Pin>?</tem:Pin><!--Optional:--><tem:BVN>56456455656564</tem:BVN><!--Optional:--><tem:otp>?</tem:otp><tem:Amount>0</tem:Amount><!--Optional:--><tem:RequestType>?</tem:RequestType><!--Optional:--><tem:MobNum>?</tem:MobNum><!--Optional:--><tem:branchCode>205</tem:branchCode></tem:request></tem:AccountOpeningBVN></soap:Body></soap:Envelope>' ; 
+var xmlbr = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tem="http://tempuri.org/"><soapenv:Header/><soapenv:Body><tem:BotRegistration/></soapenv:Body></soapenv:Envelope>' ;
+var xmlsatp = '<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:tem="http://tempuri.org/"><soap:Header/><soap:Body><tem:SelfAirtimePurchase><!--Optional:--><tem:request><!--Optional:--><tem:UserId>545455</tem:UserId><!--Optional:--><tem:hash>5555455</tem:hash><!--Optional:--><tem:FirstName></tem:FirstName><!--Optional:--><tem:LastName>?</tem:LastName><tem:DateOfBirth>0001-01-01T00:00:00</tem:DateOfBirth><!--Optional:--><tem:Gender>?</tem:Gender><!--Optional:--><tem:MobileNumber>080256895248</tem:MobileNumber><!--Optional:--><tem:Email>?</tem:Email><!--Optional:--><tem:Pin>?</tem:Pin><!--Optional:--><tem:BVN>?</tem:BVN><!--Optional:--><tem:otp>?</tem:otp><tem:Amount>500</tem:Amount><!--Optional:--><tem:RequestType>100</tem:RequestType><!--Optional:--><tem:MobNum>?</tem:MobNum><!--Optional:--><tem:branchCode>?</tem:branchCode></tem:request></tem:SelfAirtimePurchase></soap:Body></soap:Envelope>';
+var xmltpat = '<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:tem="http://tempuri.org/"><soap:Header/><soap:Body><tem:ThirdPartyAirtimePurchase><!--Optional:--><tem:request><!--Optional:--><tem:UserId>5545554</tem:UserId><!--Optional:--><tem:hash>?</tem:hash><!--Optional:--><tem:FirstName>?</tem:FirstName><!--Optional:--><tem:LastName>jhdhhdhjdjhjhdjhd</tem:LastName><tem:DateOfBirth>0001-01-01T00:00:00</tem:DateOfBirth><!--Optional:--><tem:Gender>?</tem:Gender><!--Optional:--><tem:MobileNumber>555522225</tem:MobileNumber><!--Optional:--><tem:Email>?</tem:Email><!--Optional:--><tem:Pin>?</tem:Pin><!--Optional:--><tem:BVN>?</tem:BVN><!--Optional:--><tem:otp>?</tem:otp><tem:Amount>1000</tem:Amount><!--Optional:--><tem:RequestType>100</tem:RequestType><!--Optional:--><tem:MobNum>?</tem:MobNum><!--Optional:--><tem:branchCode>?</tem:branchCode></tem:request></tem:ThirdPartyAirtimePurchase></soap:Body></soap:Envelope>' ;
+
 let searchKeyword = '';
 let userId = '';
 
+const FACEBOOK_LOCATION = "FACEBOOK_LOCATION";
+const FACEBOOK_WELCOME = "FACEBOOK_WELCOME";
 
 class FacebookBot {
     constructor() {
-        this.apiAiService = apiai(APIAI_ACCESS_TOKEN, { language: APIAI_LANG, requestSource: "fb" });
+        this.apiAiService = apiai(APIAI_ACCESS_TOKEN, {language: APIAI_LANG, requestSource: "fb"});
         this.sessionIds = new Map();
         this.messagesDelay = 200;
     }
@@ -75,121 +152,119 @@ class FacebookBot {
                         let splittedText = this.splitResponse(message.speech);
 
                         splittedText.forEach(s => {
-                            facebookMessages.push({ text: s });
+                            facebookMessages.push({text: s});
                         });
                     }
 
                     break;
-                    //message.type 1 means card message
-                case 1:
-                    {
-                        let carousel = [message];
+                //message.type 1 means card message
+                case 1: {
+                    let carousel = [message];
 
-                        for (messageIndex++; messageIndex < messages.length; messageIndex++) {
-                            if (messages[messageIndex].type == 1) {
-                                carousel.push(messages[messageIndex]);
-                            } else {
-                                messageIndex--;
-                                break;
+                    for (messageIndex++; messageIndex < messages.length; messageIndex++) {
+                        if (messages[messageIndex].type == 1) {
+                            carousel.push(messages[messageIndex]);
+                        } else {
+                            messageIndex--;
+                            break;
+                        }
+                    }
+
+                    let facebookMessage = {};
+                    carousel.forEach((c) => {
+                        // buttons: [ {text: "hi", postback: "postback"} ], imageUrl: "", title: "", subtitle: ""
+
+                        let card = {};
+
+                        card.title = c.title;
+                        card.image_url = c.imageUrl;
+                        if (this.isDefined(c.subtitle)) {
+                            card.subtitle = c.subtitle;
+                        }
+                        //If button is involved in.
+                        if (c.buttons.length > 0) {
+                            let buttons = [];
+                            for (let buttonIndex = 0; buttonIndex < c.buttons.length; buttonIndex++) {
+                                let button = c.buttons[buttonIndex];
+
+                                if (button.text) {
+                                    let postback = button.postback;
+                                    if (!postback) {
+                                        postback = button.text;
+                                    }
+
+                                    let buttonDescription = {
+                                        title: button.text
+                                    };
+
+                                    if (postback.startsWith("http")) {
+                                        buttonDescription.type = "web_url";
+                                        buttonDescription.url = postback;
+                                    } else {
+                                        buttonDescription.type = "postback";
+                                        buttonDescription.payload = postback;
+                                    }
+
+                                    buttons.push(buttonDescription);
+                                }
+                            }
+
+                            if (buttons.length > 0) {
+                                card.buttons = buttons;
                             }
                         }
 
+                        if (!facebookMessage.attachment) {
+                            facebookMessage.attachment = {type: "template"};
+                        }
+
+                        if (!facebookMessage.attachment.payload) {
+                            facebookMessage.attachment.payload = {template_type: "generic", elements: []};
+                        }
+
+                        facebookMessage.attachment.payload.elements.push(card);
+                    });
+
+                    facebookMessages.push(facebookMessage);
+                }
+
+                    break;
+                //message.type 2 means quick replies message
+                case 2: {
+                    if (message.replies && message.replies.length > 0) {
                         let facebookMessage = {};
-                        carousel.forEach((c) => {
-                            // buttons: [ {text: "hi", postback: "postback"} ], imageUrl: "", title: "", subtitle: ""
 
-                            let card = {};
+                        facebookMessage.text = message.title ? message.title : 'Choose an item';
+                        facebookMessage.quick_replies = [];
 
-                            card.title = c.title;
-                            card.image_url = c.imageUrl;
-                            if (this.isDefined(c.subtitle)) {
-                                card.subtitle = c.subtitle;
-                            }
-                            //If button is involved in.
-                            if (c.buttons.length > 0) {
-                                let buttons = [];
-                                for (let buttonIndex = 0; buttonIndex < c.buttons.length; buttonIndex++) {
-                                    let button = c.buttons[buttonIndex];
-
-                                    if (button.text) {
-                                        let postback = button.postback;
-                                        if (!postback) {
-                                            postback = button.text;
-                                        }
-
-                                        let buttonDescription = {
-                                            title: button.text
-                                        };
-
-                                        if (postback.startsWith("http")) {
-                                            buttonDescription.type = "web_url";
-                                            buttonDescription.url = postback;
-                                        } else {
-                                            buttonDescription.type = "postback";
-                                            buttonDescription.payload = postback;
-                                        }
-
-                                        buttons.push(buttonDescription);
-                                    }
-                                }
-
-                                if (buttons.length > 0) {
-                                    card.buttons = buttons;
-                                }
-                            }
-
-                            if (!facebookMessage.attachment) {
-                                facebookMessage.attachment = { type: "template" };
-                            }
-
-                            if (!facebookMessage.attachment.payload) {
-                                facebookMessage.attachment.payload = { template_type: "generic", elements: [] };
-                            }
-
-                            facebookMessage.attachment.payload.elements.push(card);
+                        message.replies.forEach((r) => {
+                            facebookMessage.quick_replies.push({
+                                content_type: "text",
+                                title: r,
+                                payload: r
+                            });
                         });
 
                         facebookMessages.push(facebookMessage);
                     }
+                }
 
                     break;
-                    //message.type 2 means quick replies message
-                case 2:
-                    {
-                        if (message.replies && message.replies.length > 0) {
-                            let facebookMessage = {};
-
-                            facebookMessage.text = message.title ? message.title : 'Choose an item';
-                            facebookMessage.quick_replies = [];
-
-                            message.replies.forEach((r) => {
-                                facebookMessage.quick_replies.push({
-                                    content_type: "text",
-                                    title: r,
-                                    payload: r
-                                });
-                            });
-
-                            facebookMessages.push(facebookMessage);
-                        }
-                    }
-
-                    break;
-                    //message.type 3 means image message
+                //message.type 3 means image message
                 case 3:
 
                     if (message.imageUrl) {
                         let facebookMessage = {};
 
                         // "imageUrl": "http://example.com/image.jpg"
-                        facebookMessage.attachment = { type: "image" };
-                        facebookMessage.attachment.payload = { url: message.imageUrl };
+                        facebookMessage.attachment = {type: "image"};
+                        facebookMessage.attachment.payload = {url: message.imageUrl};
 
                         facebookMessages.push(facebookMessage);
                     }
 
                     break;
-                    //message.type 4 means custom payload message
+                //message.type 4 means custom payload message
                 case 4:
                     if (message.payload && message.payload.facebook) {
                         facebookMessages.push(message.payload.facebook);
@@ -221,7 +296,7 @@ class FacebookBot {
         });
     }
 
-    //facebook text response message
+         //facebook text response message
     /*
      * Send a text message using the Send API.
      *
@@ -246,61 +321,105 @@ class FacebookBot {
         let splittedText = this.splitResponse(responseText);
 
         async.eachSeries(splittedText, (textPart, callback) => {
-            this.sendFBMessage(sender, { text: textPart })
+            this.sendFBMessage(sender, {text: textPart})
                 .then(() => callback())
                 .catch(err => callback(err));
         });
     }
 
-
     //which webhook event
     getEventText(event) {
-            if (event.message) {
-                if (event.message.quick_reply && event.message.quick_reply.payload) {
-                    return event.message.quick_reply.payload;
-                }
-
-                if (event.message.text) {
-                    return event.message.text;
-                }
+        if (event.message) {
+            if (event.message.quick_reply && event.message.quick_reply.payload) {
+                return event.message.quick_reply.payload;
             }
 
-            if (event.postback && event.postback.payload) {
-                return event.postback.payload;
+            if (event.message.text) {
+                return event.message.text;
             }
-            return null;
         }
-        //process event
-    processEvent(event) {
+
+        if (event.postback && event.postback.payload) {
+            return event.postback.payload;
+        }
+
+        return null;
+
+    }
+
+    getFacebookEvent(event) {
+        if (event.postback && event.postback.payload) {
+
+            let payload = event.postback.payload;
+
+            switch (payload) {
+                case FACEBOOK_WELCOME:
+                    return {name: FACEBOOK_WELCOME};
+
+                case FACEBOOK_LOCATION:
+                    return {name: FACEBOOK_LOCATION, data: event.postback.data}
+            }
+        }
+
+        return null;
+    }
+
+    processFacebookEvent(event) {
         const sender = event.sender.id.toString();
-        //this can be used globally
-        //  sender_id = sender;
-        const text = this.getEventText(event);
-        const message = event.message;
-        // You may get a text or attachment but not both
-        const messageAttachments = message.attachments;
-        if (text) {
+        const eventObject = this.getFacebookEvent(event);
+
+        if (eventObject) {
+
             // Handle a text message from this sender
             if (!this.sessionIds.has(sender)) {
                 this.sessionIds.set(sender, uuid.v4());
             }
-            //
+
+            let apiaiRequest = this.apiAiService.eventRequest(eventObject,
+                {
+                    sessionId: this.sessionIds.get(sender),
+                    originalRequest: {
+                        data: event,
+                        source: "facebook"
+                    }
+                });
+            this.doApiAiRequest(apiaiRequest, sender);
+        }
+    }
+
+    processMessageEvent(event) {
+        const sender = event.sender.id.toString();
+        const text = this.getEventText(event);
+
+        if (text) {
+
+            // Handle a text message from this sender
+            if (!this.sessionIds.has(sender)) {
+                this.sessionIds.set(sender, uuid.v4());
+            }
+
             console.log("Text", text);
             //send user's text to api.ai service
-            let apiaiRequest = this.apiAiService.textRequest(text, {
-                sessionId: this.sessionIds.get(sender),
-                originalRequest: {
-                    data: event,
-                    source: "facebook"
-                },
-            });
-            //get response from api.ai
-            apiaiRequest.on('response', (response) => {
-                if (this.isDefined(response.result) && this.isDefined(response.result.fulfillment)) {
-                    let responseText = response.result.fulfillment.speech;
-                    let responseData = response.result.fulfillment.data;
-                    let responseMessages = response.result.fulfillment.messages;
-                    let responseAction = response.result.action;
+            let apiaiRequest = this.apiAiService.textRequest(text,
+                {
+                    sessionId: this.sessionIds.get(sender),
+                    originalRequest: {
+                        data: event,
+                        source: "facebook"
+                    }
+                });
+
+            this.doApiAiRequest(apiaiRequest, sender);
+        }
+    }
+
+    doApiAiRequest(apiaiRequest, sender) {
+        apiaiRequest.on('response', (response) => {
+            if (this.isDefined(response.result) && this.isDefined(response.result.fulfillment)) {
+                let responseText = response.result.fulfillment.speech;
+                let responseData = response.result.fulfillment.data;
+                let responseMessages = response.result.fulfillment.messages;
+                let responseAction = response.result.action;
                     let action = response.result.action;
                     searchKeyword = response.result.parameters.keyword;
                     if (action == 'onboard737Service.onboard737Service-yes') {
@@ -318,47 +437,54 @@ class FacebookBot {
                     } else if (action == 'location.search') {
                         sendLocation(sender);
                     } else {
-                        if (this.isDefined(responseData) && this.isDefined(responseData.facebook)) {
-                            let facebookResponseData = responseData.facebook;
-                            this.doDataResponse(sender, facebookResponseData);
-                        } else if (this.isDefined(responseMessages) && responseMessages.length > 0) {
-                            this.doRichContentResponse(sender, responseMessages);
-                        } else if (this.isDefined(responseText)) {
-                            this.doTextResponse(sender, responseText);
-                        }
-                    }
-                }
-            });
 
-            apiaiRequest.on('error', (error) => console.error(error));
-            apiaiRequest.end();
+                if (this.isDefined(responseData) && this.isDefined(responseData.facebook)) {
+                    let facebookResponseData = responseData.facebook;
+                    this.doDataResponse(sender, facebookResponseData);
+                } else if (this.isDefined(responseMessages) && responseMessages.length > 0) {
+                    this.doRichContentResponse(sender, responseMessages);
+                }
+                else if (this.isDefined(responseText)) {
+                    this.doTextResponse(sender, responseText);
+                }
+
+            }
+            }
+        });
+
+        apiaiRequest.on('error', (error) => console.error(error));
+        apiaiRequest.end();
 
         } else if (messageAttachments) {
             const locationLat = messageAttachments[0].payload.coordinates.lat;
             const locationLong = messageAttachments[0].payload.coordinates.long;
             sendTypingOn(sender);
             getNearestBankLocation(sender, searchKeyword, locationLat, locationLong);
-        }
+
     }
+}
+// End of process event
 
     splitResponse(str) {
         if (str.length <= FB_TEXT_LIMIT) {
             return [str];
         }
+
         return this.chunkString(str, FB_TEXT_LIMIT);
     }
 
     chunkString(s, len) {
-        let curr = len,
-            prev = 0;
+        let curr = len, prev = 0;
+
         let output = [];
 
         while (s[curr]) {
-            if (s[curr++] == '') {
+            if (s[curr++] == ' ') {
                 output.push(s.substring(prev, curr));
                 prev = curr;
                 curr += len;
-            } else {
+            }
+            else {
                 let currReverse = curr;
                 do {
                     if (s.substring(currReverse - 1, currReverse) == ' ') {
@@ -371,7 +497,6 @@ class FacebookBot {
                 } while (currReverse > prev)
             }
         }
-
         output.push(s.substr(prev));
         return output;
     }
@@ -380,10 +505,10 @@ class FacebookBot {
         return new Promise((resolve, reject) => {
             request({
                 url: 'https://graph.facebook.com/v2.6/me/messages',
-                qs: { access_token: FB_PAGE_ACCESS_TOKEN },
+                qs: {access_token: FB_PAGE_ACCESS_TOKEN},
                 method: 'POST',
                 json: {
-                    recipient: { id: sender },
+                    recipient: {id: sender},
                     message: messageData
                 }
             }, (error, response) => {
@@ -404,10 +529,10 @@ class FacebookBot {
         return new Promise((resolve, reject) => {
             request({
                 url: 'https://graph.facebook.com/v2.6/me/messages',
-                qs: { access_token: FB_PAGE_ACCESS_TOKEN },
+                qs: {access_token: FB_PAGE_ACCESS_TOKEN},
                 method: 'POST',
                 json: {
-                    recipient: { id: sender },
+                    recipient: {id: sender},
                     sender_action: action
                 }
             }, (error, response) => {
@@ -427,13 +552,36 @@ class FacebookBot {
     doSubscribeRequest() {
         request({
                 method: 'POST',
-                uri: "https://graph.facebook.com/v2.6/me/subscribed_apps?access_token=" + FB_PAGE_ACCESS_TOKEN
+                uri: `https://graph.facebook.com/v2.6/me/subscribed_apps?access_token=${FB_PAGE_ACCESS_TOKEN}`
             },
             (error, response, body) => {
                 if (error) {
                     console.error('Error while subscription: ', error);
                 } else {
                     console.log('Subscription result: ', response.body);
+                }
+            });
+    }
+
+    configureGetStartedEvent() {
+        request({
+                method: 'POST',
+                uri: `https://graph.facebook.com/v2.6/me/thread_settings?access_token=${FB_PAGE_ACCESS_TOKEN}`,
+                json: {
+                    setting_type: "call_to_actions",
+                    thread_state: "new_thread",
+                    call_to_actions: [
+                        {
+                            payload: FACEBOOK_WELCOME
+                        }
+                    ]
+                }
+            },
+            (error, response, body) => {
+                if (error) {
+                    console.error('Error while subscription', error);
+                } else {
+                    console.log('Subscription result', response.body);
                 }
             });
     }
@@ -479,13 +627,21 @@ function customerOnboarded() {
     });
     // });
 }
+
+
 let facebookBot = new FacebookBot();
+
 const app = express();
+
 app.use(bodyParser.text({ type: 'application/json' }));
 //app.use(express.static('public'));
+
+app.use(bodyParser.text({type: 'application/json'}));
+
 app.get('/webhook/', (req, res) => {
-    if (req.query['hub.verify_token'] == FB_VERIFY_TOKEN) {
+    if (req.query['hub.verify_token'] === FB_VERIFY_TOKEN) {
         res.send(req.query['hub.challenge']);
+
         setTimeout(() => {
             facebookBot.doSubscribeRequest();
         }, 3000);
@@ -493,28 +649,53 @@ app.get('/webhook/', (req, res) => {
         res.send('Error, wrong validation token');
     }
 });
-//post users data and get response
+
 app.post('/webhook/', (req, res) => {
-    const data = JSONbig.parse(req.body);
     try {
+        const data = JSONbig.parse(req.body);
+
         if (data.entry) {
             let entries = data.entry;
             entries.forEach((entry) => {
                 let messaging_events = entry.messaging;
                 if (messaging_events) {
                     messaging_events.forEach((event) => {
-                        userId = event.sender.id;
+                         userId = event.sender.id;
                         console.log(userId);
                         if (event.message && !event.message.is_echo ||
                             event.postback && event.postback.payload) {
-                            facebookBot.processEvent(event);
-                        }
-                    });
-                }
-            });
-        }
 
-        return res.status(200).json({
+                            if (event.message.attachments) {
+                                let locations = event.message.attachments.filter(a => a.type === "location");
+
+                                // delete all locations from original message
+                                event.message.attachments = event.message.attachments.filter(a => a.type !== "location");
+
+                                if (locations.length > 0) {
+                                    locations.forEach(l => {
+                                        let locationEvent = {
+                                            sender: event.sender,
+                                            postback: {
+                                                payload: "FACEBOOK_LOCATION",
+                                                data: l.payload.coordinates
+                                            }
+                                        };
+
+                                        facebookBot.processFacebookEvent(locationEvent);
+                                    });
+                                }
+                            }
+
+                            facebookBot.processMessageEvent(event);
+                        } else if (event.postback && event.postback.payload) {
+                            if (event.postback.payload === "FACEBOOK_WELCOME") {
+                                facebookBot.processFacebookEvent(event);
+                            } else {
+                                facebookBot.processMessageEvent(event);
+                            }
+                        }
+                    }
+                     return res.status(200).json({
             status: "ok"
         });
     } catch (err) {
@@ -537,7 +718,7 @@ app.get('/onboarded_response', function(request, response) {
         status: request.query.status,
         message: request.query.message,
         facebookId: request.query.facebookId
-    };
+         };
     console.log(res);
     response.end(JSON.stringify(res));
 });
@@ -593,10 +774,10 @@ function receivedDeliveryConfirmation(event) {
             console.log("Received delivery confirmation for message ID: %s",
                 messageID);
         });
-    }
+          }
 
     console.log("All message before %d were delivered.", watermark);
-}
+    }
 
 
 /*
@@ -622,7 +803,6 @@ function receivedPostback(event) {
     // let them know it was successful
     sendTextMessage(senderID, "Postback called");
 }
-
 /*
  * Message Read Event
  *
@@ -640,8 +820,10 @@ function receivedMessageRead(event) {
 
     console.log("Received message read event for watermark %d and sequence " +
         "number %d", watermark, sequenceNumber);
+                }
+        
+    
 }
-
 /*
  * Account Link Event
  *
@@ -826,10 +1008,10 @@ function receivedDeliveryConfirmation(event) {
         messageIDs.forEach(function(messageID) {
             console.log("Received delivery confirmation for message ID: %s",
                 messageID);
-        });
-    }
+            });
+        }
 
-    console.log("All message before %d were delivered.", watermark);
+        console.log("All message before %d were delivered.", watermark);
 }
 
 
@@ -1579,9 +1761,23 @@ function callSendAPI(messageData) {
             }
         });
 }
+ 
+        return res.status(200).json({
+            status: "ok"
+        });
+    } catch (err) {
+        return res.status(400).json({
+            status: "error",
+            error: err
+        });
+    }
+
+});
+
+
 
 app.listen(REST_PORT, () => {
     console.log('Rest service ready on port ' + REST_PORT);
 });
 
-facebookBot.doSubscribeRequest();
+facebookBot.doSubscribeRequest(); 
