@@ -13,10 +13,10 @@ var url = 'http://gtweb.gtbank.com/Kola/Dev/ChatBotService/ChatBotService/Servic
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 const REST_PORT = (process.env.PORT || 5000);
-const APIAI_ACCESS_TOKEN = 'c17fdbd356aa45d18348b18806ddadc0';
+const APIAI_ACCESS_TOKEN = 'fdgfdgf';
 const APIAI_LANG = process.env.APIAI_LANG || 'en';
-const FB_VERIFY_TOKEN = 'abcd124' ;
-const FB_PAGE_ACCESS_TOKEN = 'EAALJxQYcKxABAKZAkuLFbO8eJWYRzbomonToprl0hrJEBqC8DxTX0u2Foq5IfZCtLuyb9bJjVaWcFAAtEsemEpS8UwHYeRFWN0i15NZCg12tYbALw6VIFezRSs6uD6Bbs4q5ZCwgdzZBm7yFk1sYFnE2uBGZCyAuT1l7vr4XrriAZDZD' ;
+const FB_VERIFY_TOKEN = 'dfsdwer' ;
+const FB_PAGE_ACCESS_TOKEN = 'destijheeoo' ;
 const FB_TEXT_LIMIT = 640;
 
 let searchKeyword = '';
